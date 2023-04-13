@@ -1,0 +1,235 @@
+#!/bin/bash - 
+#===============================================================================
+#
+#          FILE: prepare
+# 
+#         USAGE: ./prepare -i <app-name> -r /opt
+#                ./prepare -f 
+# 
+#   DESCRIPTION: Initialize an aviumlabs Phoenix Framework docker project with
+#                database support 
+#       OPTIONS: ---
+#  REQUIREMENTS: ---
+#          BUGS: ---
+#         NOTES: The Avium Labs Phoenix Framework docker project is setup
+#                as a multi-stage process. 
+#                First stage:
+#                  Initialize Phoenix Framework project
+#                Second stage:
+#                  Configure dev.exs for docker
+#                  Configure .env for app
+#        AUTHOR: Michael Konrad (2023), 
+#  ORGANIZATION: Avium Labs LLC 
+#       CREATED: 04/05/2023 10:42
+#      REVISION:  ---
+#===============================================================================
+
+set -o nounset                              # Treat unset variables as an error
+IFS=$'\n\t'
+
+# Defaults
+ENV_FILE=$(pwd)/.env
+APP_CONTAINER_ROOT=/opt
+
+# Help 
+usage() {
+	printf "\n"
+	printf "A script to automate the steps to configure the\n"
+	printf "docker containers based on this docker compose file.\n"
+	printf "\n"
+	printf "Project preparation is a two step process: \n"
+	printf "Step 1: Initialize Phoenix Framework project docker root and\n" 
+	printf "        the application name.\n"
+	printf "\n"
+	printf "Step 2: Finalize the Phoenix Framework project, run\n"
+	printf "        ecto.create, and docker compose up.\n"
+	printf "\n"
+	printf "$0 -i <app_name> [-r </app/container/root>]\n"
+	printf "$0 -f\n"
+	printf "\n Details: \n"
+	printf "           -i specify the name of the application.\n"
+	printf "           -r specify the application's container root\n"
+	printf "              directory, defaults to /opt.\n"
+	printf "           -f finalize the Phoenix Framework project,\n"
+	printf "              updates the config/dev.exs file and the\n"
+	printf "              docker environment file.\n"
+	printf "\n"
+	printf " This script by default generates the docker environment \n"
+	printf " file, as .env file in the current working directory.\n"
+        printf "\n\n"
+        printf "Initialize example: $0 -i gutentag -r /opt\n"
+	printf "\n"
+	printf "Finalize example: $0 -f\n"	
+	printf "\n"
+	exit 1
+}
+
+# Main function to run script operations
+#
+# Script options 
+optstring=":i:r:fh"
+while getopts ${optstring} arg; do
+		case ${arg} in 
+			f)
+				FINIT='true'
+				INIT='false'
+				;;
+			i)
+				INIT='true'
+				FINIT='false'
+				APP_NAME=${OPTARG};
+				;;
+			r)
+				INIT='true'
+				FINIT='false'
+				APP_CONTAINER_ROOT=${OPTARG}
+				;;
+			h)
+				usage
+				;;
+			:)
+				printf "Missing required value for -$OPTARG\n"
+				usage
+				;;
+			\?)
+				printf "Invalid option... -${OPTARG}\n"
+				usage
+				;;
+		esac
+	done
+
+main() {
+	if [[ ${FINIT} == true ]]; then
+		finalize
+
+	elif  [[ ${INIT} == true ]]; then 
+		initialize
+	fi
+}
+
+# Generate a random 14 character password
+gen_rand_pass() {
+	if [[ "$OSTYPE" == "darwin"* ]]; then 
+		PPWD=$(date +%s | shasum -a 256 | base64 | head -c14)
+
+	elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+		PPWD=$(date +%s | sha256sum | base64 | head -c14)
+
+	fi
+}
+
+# Generate the docker environment file if it does not exist
+gen_env_file() {
+
+	# Generate a random password for Postgres
+	gen_rand_pass
+
+	if [ ! -f $ENV_FILE ]; then
+
+cat > $ENV_FILE <<EnvFile
+# app variables
+APP_CONTAINER_ROOT=$APP_CONTAINER_ROOT
+APP_NAME=$APP_NAME
+WORKINGDIR=$APP_CONTAINER_ROOT
+
+# db variables
+POSTGRES_PASSWORD=$PPWD
+EnvFile
+
+	fi
+}
+
+# Report an error when sed fails
+sed_error() {
+	printf "Exiting, failed to update... $update_file. Please file a \
+bug report.\n"
+	exit 1
+}
+
+
+# Initialize the Phoenix Framework project
+initialize() {
+	if [ -n $APP_NAME ]; then 
+		
+		printf "Initializing Phoenix Framework project...\n"
+		printf "Application container root... $APP_CONTAINER_ROOT\n"
+		printf "Application name............. $APP_NAME\n"
+		
+		# Generate the initial docker environment file
+		gen_env_file
+
+		# Create the Phoenix Framework application 
+		printf "Running docker compose build...\n"
+		docker compose build
+
+		printf "Running phx.new...\n"
+		docker compose run --rm app mix phx.new --install $APP_NAME
+	else
+		usage
+	fi
+}
+
+
+# Finalize the Phoenix Framework configuration and call mix ecto.create
+finalize() {
+	if [ ! -f "$ENV_FILE" ]; then 
+		usage
+	else
+		lc=0
+		while IFS=$'=' read -r avar aval; do
+
+			if [[ "$avar" == "APP_CONTAINER_ROOT"* ]]; then 
+				APP_CONTAINER_ROOT=$aval	
+			fi
+			if [[ "$avar" == "APP_NAME"* ]]; then
+				APP_NAME=$aval
+			fi
+			if [[ "$avar" == "POSTGRES_PASSWORD"* ]]; then
+				PPWD=$aval
+			fi
+
+		done < $ENV_FILE
+
+		# Set the docker working directory
+		# This is the directory where the app will live in the 
+		# docker container
+		WORKINGDIR="$APP_CONTAINER_ROOT/$APP_NAME"
+
+		# Password format for dev.exs "<password>",
+		DEV_PPWD=\"$PPWD\",
+
+		# Configure dev.exs for docker
+		update_file="$APP_NAME/config/dev.exs"
+		sed -i '' -e "s|\(password: \).*|\1"$DEV_PPWD"|" \
+			-e 's|"localhost"|"db"|' \
+			-e 's|127, 0, 0, 1|0, 0, 0, 0|' $update_file
+
+		# sed varies between operating systems, check if it failed
+		if [ $? -gt 0 ]; then
+			sed_error
+		fi
+
+		# Update the WORKINGDIR in the env file
+		update_file=$ENV_FILE
+		sed -i '' -e "s|\(WORKINGDIR=\).*|\1"$WORKINGDIR"|" \
+			$update_file
+
+		# sed varies between operating systems, check if it failed
+		if [ $? -gt 0 ]; then
+			sed_error	
+		fi
+		
+		# Run mix ecto.create
+		cd $APP_NAME
+		printf "Running mix ecto.create...\n"
+		docker compose run --rm app mix ecto.create
+
+
+		# Start the application
+		printf "Running docker compose up; press cntl-c a to stop.\n"
+		printf "\n"
+		docker compose up
+	fi
+}
+
+main
