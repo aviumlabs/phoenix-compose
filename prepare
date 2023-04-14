@@ -199,7 +199,7 @@ finalize() {
 		DEV_PPWD=\"$PPWD\",
 
 		# Configure dev.exs for docker
-		update_file="$APP_NAME/config/dev.exs"
+		update_file="src/$APP_NAME/config/dev.exs"
 		sed -i '' -e "s|\(password: \).*|\1"$DEV_PPWD"|" \
 			-e 's|"localhost"|"db"|' \
 			-e 's|127, 0, 0, 1|0, 0, 0, 0|' $update_file
@@ -220,7 +220,7 @@ finalize() {
 		fi
 		
 		# Run mix ecto.create
-		cd $APP_NAME
+		cd "src/$APP_NAME"
 		printf "Running mix ecto.create...\n"
 		docker compose run --rm app mix ecto.create
 
