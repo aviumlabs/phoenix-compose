@@ -23,7 +23,7 @@ Public
 
 Generating your repository...
 
-#### Clone the new repository
+#### Clone a New Repository
 
 GitHub CLI
 
@@ -58,26 +58,45 @@ Service Details
 ---------------
 
 The Phoenix Framework application is exposed on port 4000. 
+
 The src directory in the project working directory is bind mounted to the 
-APP\_CONTAINER\_ROOT directory which by default is set to /opt.
+APP\_CONTAINER\_ROOT directory which by default is set to /opt when initialized
+and is then set to /opt/\<application\_name\> after running finalize.
 
 The default APP\_CONTAINER\_ROOT can be set during the project initialization 
 phase by specifying the -r flag to the prepare script.
 
     $ ./prepare -i gutentag -r /usr/local
 
-The prepare script performs the follow functions:
+The prepare script performs the following actions during initialization:
 - generates a docker environment file (.env)
 - generates a random password for the Postgres account 
+
+The prepare script performs the following actions during finalization:
 - prepares the config/dev.exs dev environment:
   - sets the ip address to 0, 0, 0, 0
   - sets the database host
-  - sets the database password 
+  - sets the database password (pulled from the .env file)
 
 
 ### Docker Images
 - Phoenix Framework image: aviumlabs/phoenix:latest-alpine 
 - PostgreSQL image: postgres:15.2-alpine 
+
+
+Development
+-----------
+With the src directory bind mounted to the application directory, you can use 
+your favorite local development environment to continue with developing 
+your application.
+
+### Running Mix Against the Docker Container
+To run mix against the container, setting an alias can reduce some typing:
+
+If running zsh in macOS, to permanently set the alias; add the following 
+line to the ~/.zshrc file:
+
+    alias mix="docker compose run --rm app mix"
 
 
 
