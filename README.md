@@ -15,11 +15,11 @@ Creating a Repository From this Template
 - Select Use this template
 - Select Create a new repository
 
-Repository name: gutentag
+Repository name: __gutentag__
 Description: A hello world application
 Public
 
-- Select Creat repository from template
+- Select 'Create repository from template'
 
 Generating your repository...
 
@@ -83,6 +83,16 @@ The prepare script performs the following actions during finalization:
 - Phoenix Framework image: aviumlabs/phoenix:latest-alpine 
 - PostgreSQL image: postgres:15.2-alpine 
 
+Umbrella Project
+----------------
+A Phoenix Framework umbrella project can also be created with the prepare 
+script. 
+
+    $ ./prepare -i <app_name> -r /opt -u
+    $ ./prepare -i <app_name> -u
+
+Official Elixir umbrella documentation 
+[here](https://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-projects.html)
 
 Development
 -----------
