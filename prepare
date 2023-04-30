@@ -3,7 +3,9 @@
 #
 #          FILE: prepare
 # 
-#         USAGE: ./prepare -i <app-name> -r /opt
+#         USAGE: ./prepare -i <app-name> -r /opt -u 
+#                ./prepare -i <app-name> -r /opt
+#                ./prepare -i <app-name>
 #                ./prepare -f 
 # 
 #   DESCRIPTION: Initialize an aviumlabs Phoenix Framework docker project with
@@ -44,12 +46,14 @@ usage() {
 	printf "Step 2: Finalize the Phoenix Framework project, run\n"
 	printf "        ecto.create, and docker compose up.\n"
 	printf "\n"
-	printf "$0 -i <app_name> [-r </app/container/root>]\n"
+	printf "$0 -i <app_name> [-r </app/container/root>] [-u]\n"
 	printf "$0 -f\n"
 	printf "\n Details: \n"
 	printf "           -i specify the name of the application.\n"
-	printf "           -r specify the application's container root\n"
+	printf "           -r optionally specify the application's container root\n"
 	printf "              directory, defaults to /opt.\n"
+	printf "           -u optionally specify this application is configured as\n"
+	printf "              a Phoneix umbrella application.\n" 
 	printf "           -f finalize the Phoenix Framework project,\n"
 	printf "              updates the config/dev.exs file and the\n"
 	printf "              docker environment file.\n"
@@ -57,48 +61,57 @@ usage() {
 	printf " This script by default generates the docker environment \n"
 	printf " file, as .env file in the current working directory.\n"
         printf "\n\n"
-        printf "Initialize example: $0 -i gutentag -r /opt\n"
+        printf "Initialize example:\n" 
+	printf "  * $0 -i gutentag -r /opt -u\n"
+	printf "  * $0 -i gutentag -r /app\n"
+	printf "  * $0 -i gutentag\n"
 	printf "\n"
 	printf "Finalize example: $0 -f\n"	
 	printf "\n"
 	exit 1
 }
 
-# Main function to run script operations
-#
-# Script options 
-optstring=":i:r:fh"
-while getopts ${optstring} arg; do
-		case ${arg} in 
-			f)
-				FINIT='true'
-				INIT='false'
-				;;
-			i)
-				INIT='true'
-				FINIT='false'
-				APP_NAME=${OPTARG};
-				;;
-			r)
-				INIT='true'
-				FINIT='false'
-				APP_CONTAINER_ROOT=${OPTARG}
-				;;
-			h)
-				usage
-				;;
-			:)
-				printf "Missing required value for -$OPTARG\n"
-				usage
-				;;
-			\?)
-				printf "Invalid option... -${OPTARG}\n"
-				usage
-				;;
-		esac
-	done
+FINIT='false'
+INIT='false'
+UMBRELLA='false'
 
+# Script options 
+optstring=":i:r:fuh"
+while getopts ${optstring} arg; do
+	case ${arg} in 
+		f)
+			FINIT='true'
+			;;
+		i)
+			INIT='true'
+			APP_NAME=${OPTARG};
+			;;
+		r)
+			INIT='true'
+			APP_CONTAINER_ROOT=${OPTARG}
+			;;
+		u)
+			INIT='true'
+			UMBRELLA='true'
+			;;
+		h)
+			usage
+			;;
+		:)
+			printf "Missing required value for -$OPTARG\n"
+			usage
+			;;
+		\?)
+			printf "Invalid option... -${OPTARG}\n"
+			usage
+			;;
+	esac
+done
+
+
+# Main function to run script operations
 main() {
+	
 	if [[ ${FINIT} == true ]]; then
 		finalize
 
@@ -124,6 +137,7 @@ gen_env_file() {
 	# Generate a random password for Postgres
 	gen_rand_pass
 
+	
 	if [ ! -f $ENV_FILE ]; then
 
 cat > $ENV_FILE <<EnvFile
@@ -131,6 +145,7 @@ cat > $ENV_FILE <<EnvFile
 APP_CONTAINER_ROOT=$APP_CONTAINER_ROOT
 APP_NAME=$APP_NAME
 WORKINGDIR=$APP_CONTAINER_ROOT
+UMBRELLA=$UMBRELLA
 
 # db variables
 POSTGRES_PASSWORD=$PPWD
@@ -152,8 +167,8 @@ initialize() {
 	if [ -n $APP_NAME ]; then 
 		
 		printf "Initializing Phoenix Framework project...\n"
-		printf "Application container root... $APP_CONTAINER_ROOT\n"
-		printf "Application name............. $APP_NAME\n"
+		printf "Application container root............... $APP_CONTAINER_ROOT\n"
+		printf "Application name......................... $APP_NAME\n"
 		
 		# Generate the initial docker environment file
 		gen_env_file
@@ -162,8 +177,13 @@ initialize() {
 		printf "Running docker compose build...\n"
 		docker compose build
 
-		printf "Running phx.new...\n"
-		docker compose run --rm app mix phx.new --install $APP_NAME
+		if [[ ${UMBRELLA} == true ]]; then
+			printf "Running phx.new umbrella...\n"
+			docker compose run --rm app mix phx.new --umbrella --install $APP_NAME
+		else
+			printf "Running phx.new...\n"
+			docker compose run --rm app mix phx.new --install $APP_NAME
+		fi
 	else
 		usage
 	fi
@@ -184,6 +204,9 @@ finalize() {
 			if [[ "$avar" == "APP_NAME"* ]]; then
 				APP_NAME=$aval
 			fi
+			if [[ "$avar" == "UMBRELLA"* ]]; then
+			       UMBRELLA=$aval
+			fi	       
 			if [[ "$avar" == "POSTGRES_PASSWORD"* ]]; then
 				PPWD=$aval
 			fi
@@ -193,6 +216,10 @@ finalize() {
 		# Set the docker working directory
 		# This is the directory where the app will live in the 
 		# docker container
+		if [[ ${UMBRELLA} == true ]]; then
+			APP_NAME="$APP_NAME"_umbrella
+		fi
+
 		WORKINGDIR="$APP_CONTAINER_ROOT/$APP_NAME"
 
 		# Password format for dev.exs "<password>",
