@@ -11,6 +11,8 @@ Creating a Repository From this Template
 
 ### Example Project
 
+#### Create a New Repository on GitHub
+
 - Go to https://github.com/aviumlabs/phoenix-compose
 - Select Use this template
 - Select Create a new repository
@@ -23,14 +25,24 @@ Public
 
 Generating your repository...
 
-#### Clone a New Repository
+#### Clone the New Repository
 
 GitHub CLI
 
-    $ cd <project/home/directory>
-    $ clone aviumlabs/gutentag
+    $ cd <projects/directory>
+    $ gh repo clone aviumlabs/gutentag
 
-#### Aviumlabs Prepare Script
+
+#### Create and Clone a New Public Repository with GitHub CLI
+
+    $ cd <projects/directory>
+    $ gh repo create gutentag -c -d "A hello world app" --public \
+      -p aviumlabs/phoenix-compose 
+
+  Created repository aviumlabs/gutentag on GitHub
+Cloning into 'gutentag'...
+
+#### Avium Labs Prepare Script
 
 The included prepare script will create a Phoenix Framework project. 
 
@@ -39,7 +51,7 @@ Run `$ ./prepare -h` to get started.
 Running the prepare script to initialize the Phoenix Framework project:
 
     $ cd gutentag
-    $ ./prepare -i gutentag
+    $ ./prepare -i gutentag -u
 ...
 We are almost there! ...
 
