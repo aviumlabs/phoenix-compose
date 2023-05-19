@@ -11,7 +11,7 @@ services:
       - db
   db:
     env_file: .env
-    image: "postgres:15.2-alpine"
+    image: "postgres:15.3-alpine3.18"
     restart: always
     volumes:
       - db-data:/var/lib/postgresql/data
