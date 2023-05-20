@@ -1,6 +1,8 @@
 A Phoenix Framework Docker Compose Repo
 =======================================
 
+---
+
 This is a template repo and it can be utilized using the following pattern. 
 
 Creating a Repository From this Template
@@ -32,6 +34,9 @@ GitHub CLI
     $ cd <projects/directory>
     $ gh repo clone aviumlabs/gutentag
 
+__or__
+
+---
 
 #### Create and Clone a New Public Repository with GitHub CLI
 
@@ -52,7 +57,9 @@ Running the prepare script to initialize the Phoenix Framework project:
 
     $ cd gutentag
     $ ./prepare -i gutentag -u
+
 ...
+
 We are almost there! ...
 
     $ ./prepare -f
