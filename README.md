@@ -19,9 +19,9 @@ Creating a Repository From this Template
 - Select Use this template
 - Select Create a new repository
 
-Repository name: __gutentag__
-Description: A hello world application
-Public
+Repository name: __gutentag__<br />
+Description: A hello world application<br />
+Public<br />
 
 - Select 'Create repository from template'
 
@@ -44,8 +44,10 @@ __or__
     $ gh repo create gutentag -c -d "A hello world app" --public \
       -p aviumlabs/phoenix-compose 
 
-  Created repository aviumlabs/gutentag on GitHub
-Cloning into 'gutentag'...
+Created repository aviumlabs/gutentag on GitHub<br />
+Cloning into 'gutentag'...<br />
+
+---
 
 #### Avium Labs Prepare Script
 
@@ -65,8 +67,11 @@ We are almost there! ...
     $ ./prepare -f
     
 Running mix ecto.create...
+
 ...
+
 Running docker compose up; press cntl-c a to stop.
+
 ...
 
 
@@ -126,7 +131,5 @@ If running zsh in macOS, to permanently set the alias; add the following
 line to the ~/.zshrc file:
 
     alias mix="docker compose run --rm app mix"
-
-
 
 [git-from-template]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
