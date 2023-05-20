@@ -253,7 +253,7 @@ finalize() {
 
 
 		# Start the application
-		printf "Running docker compose up; press cntl-c a to stop.\n"
+		printf "Running docker compose up; press cntl-c to stop.\n"
 		printf "\n"
 		docker compose up
 	fi

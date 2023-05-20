@@ -70,13 +70,13 @@ Running mix ecto.create...
 
 ...
 
-Running docker compose up; press cntl-c a to stop.
+Running docker compose up; press cntl-c to stop.
 
 ...
 
 
 The example application is now running in the foreground and can be shutdown 
-with `cntl-c a`.
+with `cntl-c`.
 
 Service Details
 ---------------
