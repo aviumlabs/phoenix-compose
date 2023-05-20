@@ -130,6 +130,6 @@ To run mix against the container, setting an alias can reduce some typing:
 If running zsh in macOS, to permanently set the alias; add the following 
 line to the ~/.zshrc file:
 
-    alias mix="docker compose run --rm app mix"
+    alias mix="docker compose exec app mix"
 
 [git-from-template]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
