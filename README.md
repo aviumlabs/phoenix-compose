@@ -115,8 +115,8 @@ script.
     $ ./prepare -i <app_name> -r /opt -u
     $ ./prepare -i <app_name> -u
 
-Official Elixir umbrella documentation 
-[here](https://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-projects.html)
+Official Elixir Umbrella Documentation 
+[Link](https://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-projects.html)
 
 Development
 -----------
