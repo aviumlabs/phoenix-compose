@@ -5,6 +5,9 @@ A Phoenix Framework Docker Compose Repo
 
 This is a template repo and it can be utilized using the following pattern. 
 
+
+See the __Development__ section below for handy tips on setting aliases.
+
 Creating a Repository From this Template
 ----------------------------------------
 
@@ -13,7 +16,7 @@ Creating a Repository From this Template
 
 ### Example Project
 
-#### Create a New Repository on GitHub
+#### Create a New Repository on GitHub.com
 
 - Go to https://github.com/aviumlabs/phoenix-compose
 - Select Use this template
@@ -130,6 +133,14 @@ To run mix against the container, setting an alias can reduce some typing:
 If running zsh in macOS, to permanently set the alias; add the following 
 line to the ~/.zshrc file:
 
-    alias mix="docker compose exec app mix"
+    $ alias mix="docker compose exec app mix"
+
+### Umbrella App
+If you are working with an umbrella application and you need to run mix 
+against the umbrella web app, then setup your aliases like so or as you prefer. 
+
+    $ alias mix="docker compose exec app mix"
+    $ alias wmix="docker compose exec -w <APP_CONTAINER_ROOT>/<app_name>_umbrella/apps/<app_name>_web app mix"
+
 
 [git-from-template]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
