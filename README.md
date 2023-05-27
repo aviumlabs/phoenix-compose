@@ -108,7 +108,7 @@ The prepare script performs the following actions during finalization:
 
 ### Docker Images
 - Phoenix Framework image: aviumlabs/phoenix:latest-alpine 
-- PostgreSQL image: postgres:15.2-alpine 
+- PostgreSQL image: postgres:15.3-alpine3.18
 
 Umbrella Project
 ----------------
