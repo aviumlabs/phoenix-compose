@@ -135,12 +135,20 @@ line to the ~/.zshrc file:
 
     $ alias mix="docker compose exec app mix"
 
+docker compose exec is the docker syntax for executing a command in a container.
+app is the container to execute the command in.
+mix is the command to execute.
+
 ### Umbrella App
-If you are working with an umbrella application and you need to run mix 
-against the umbrella web app, then setup your aliases like so or as you prefer. 
+If you are working with an umbrella application there are a couple different 
+mix paths you may need to work with. 
+
+You can set the environment variables prior to sourcing these aliases. 
 
     $ alias mix="docker compose exec app mix"
-    $ alias wmix="docker compose exec -w <APP_CONTAINER_ROOT>/<app_name>_umbrella/apps/<app_name>_web app mix"
+    $ alias amix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME" app mix"
+    $ alias wmix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web app mix"
+
 
 
 [git-from-template]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
