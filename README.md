@@ -128,27 +128,37 @@ your favorite local development environment to continue with developing
 your application.
 
 ### Running Mix Against the Docker Container
-To run mix against the container, setting an alias can reduce some typing:
+To run mix against the container, setting up some aliases can reduce some 
+typing.
 
-If running zsh in macOS, to permanently set the alias; add the following 
-line to the ~/.zshrc file:
+Create a file in the root of the application directory with the following 
+content, e.g. `.<app_name>dev`:
 
-    $ alias mix="docker compose exec app mix"
+    export APP_CONTAINER_ROOT=/opt
+    export APP_NAME=app
 
-docker compose exec is the docker syntax for executing a command in a container.
-app is the container to execute the command in.
-mix is the command to execute.
+    alias mix="docker compose exec app mix"
+    alias amix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/$APP_NAME app mix"
+    alias wmix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web app mix"
+    alias iex="docker compose exec app iex"
 
-### Umbrella App
-If you are working with an umbrella application there are a couple different 
-mix paths you may need to work with. 
+Then before starting development, source the file in your shell:
 
-You can set the environment variables prior to sourcing these aliases. 
+    $ cd <app>/<root>
+    $ . ./.<app_name>dev
+   
+Comfirm the aliases are set correctly:
 
-    $ alias mix="docker compose exec app mix"
-    $ alias amix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME" app mix"
-    $ alias wmix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web app mix"
+    $ alias
 
+If you are not using an umbrella application structure, don't forget to remove the 
+`_umbrella/apps` from the above aliases.
+
+#### Breakdown of the aliases
+
+* docker compose exec is the docker syntax for executing a command in a container.
+* app is the container to execute the command in.
+* mix is the command to execute.
 
 
 [git-from-template]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
