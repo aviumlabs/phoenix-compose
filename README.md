@@ -110,6 +110,35 @@ The prepare script performs the following actions during finalization:
   - sets the database password (pulled from the .env file)
 
 
+By default aviumlabs/phoenix-compose brings up services in the foreground. To 
+run the services in the background, stop the currently running services:
+
+    $ ctrl-c
+    $ docker compose up -d
+    
+To stop an individual service:
+
+    $ docker compose stop [app, db]
+
+To start an individual service:
+
+    $ docker compose start [app, db]
+
+To view the the logs of a background service:
+
+    $ docker logs -f <running_container_name>
+
+To list the current running containers:
+
+    $ docker container ls
+
+| CONTAINER ID     | IMAGE            | ...  | NAMES                     |
+|------------------|------------------|------|---------------------------|
+| nnn              | postgres:15.3... | ...  | \<project\_name\>-db-1    |
+| nnn              | aviumlabs/...    | ...  | \<project\_name\>-app-1   |
+
+
+
 ### Docker Images
 - Phoenix Framework image: aviumlabs/phoenix:latest-alpine 
 - PostgreSQL image: postgres:15.3-alpine3.18
@@ -142,9 +171,11 @@ content, e.g. `.<app_name>dev`:
     export APP_NAME=app
 
     alias mix="docker compose run --rm app mix"
+    alias iex="docker compose run --rm app iex -S mix"
+
+    # Only required for an umbrella application 
     alias amix="docker compose run -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/$APP_NAME --rm app mix"
     alias wmix="docker compose run -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web --rm app mix"
-    alias iex="docker compose exec app iex -S mix"
 
 Then before starting development, source the file in your shell:
 
