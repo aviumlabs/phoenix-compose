@@ -110,6 +110,7 @@ The prepare script performs the following actions during finalization:
   - sets the database password (pulled from the .env file)
 
 
+### Foreground or Background Services
 By default aviumlabs/phoenix-compose brings up services in the foreground. To 
 run the services in the background, stop the currently running services:
 
@@ -137,6 +138,24 @@ To list the current running containers:
 | nnn              | postgres:15.3... | ...  | \<project\_name\>-db-1    |
 | nnn              | aviumlabs/...    | ...  | \<project\_name\>-app-1   |
 
+
+### Running ecto.reset
+
+If the services are running in the foreground; you need to stop the running 
+services `ctrl-c` and then run the following:
+
+    $ docker compose up db
+    $ mix ecto.reset
+    $ ctrl-c
+    $ docker compose up
+
+Alternatively, if the docker services are running in the background;
+
+Then run the above steps as follows:
+
+    $ docker compose stop app
+    $ mix ecto.reset
+    $ docker compose start app
 
 
 ### Docker Images
