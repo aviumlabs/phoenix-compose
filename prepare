@@ -173,10 +173,6 @@ initialize() {
 		# Generate the initial docker environment file
 		gen_env_file
 
-		# Create the Phoenix Framework application 
-		printf "Running docker compose build...\n"
-		docker compose build
-
 		if [[ ${UMBRELLA} == true ]]; then
 			printf "Running phx.new umbrella...\n"
 			docker compose run --rm app mix phx.new --umbrella --install $APP_NAME
@@ -222,12 +218,12 @@ finalize() {
 
 		WORKINGDIR="$APP_CONTAINER_ROOT/$APP_NAME"
 
-		# Password format for dev.exs "<password>",
-		DEV_PPWD=\"$PPWD\",
+		# Password format for database "<password>",
+		DB_PPWD=\"$PPWD\",
 
 		# Configure dev.exs for docker
 		update_file="src/$APP_NAME/config/dev.exs"
-		sed -i '' -e "s|\(password: \).*|\1"$DEV_PPWD"|" \
+		sed -i '' -e "s|\(password: \).*|\1"$DB_PPWD"|" \
 			-e 's|"localhost"|"db"|' \
 			-e 's|127, 0, 0, 1|0, 0, 0, 0|' $update_file
 
@@ -235,6 +231,18 @@ finalize() {
 		if [ $? -gt 0 ]; then
 			sed_error
 		fi
+
+		# Configure test.exs for docker
+		update_file="src/$APP_NAME/config/test.exs"
+		sed -i '' -e "s|\(password: \).*|\1"$DB_PPWD"|" \
+			-e 's|"localhost"|"db"|' \
+			-e 's|127, 0, 0, 1|0, 0, 0, 0|' $update_file
+
+		# sed varies between operating systems, check if it failed
+		if [ $? -gt 0 ]; then
+			sed_error
+		fi
+
 
 		# Update the WORKINGDIR in the env file
 		update_file=$ENV_FILE

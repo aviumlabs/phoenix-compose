@@ -43,6 +43,10 @@ __or__
 
 #### Create and Clone a New Public Repository with GitHub CLI
 
+    cd <projects/directory>
+    $ gh repo create gutentag -c -d "A hello world app" --public \
+      -p aviumlabs/phoenix-compose 
+
     $ cd <projects/directory>
     $ gh repo create gutentag -c -d "A hello world app" --public \
       -p aviumlabs/phoenix-compose 
@@ -127,8 +131,8 @@ With the src directory bind mounted to the application directory, you can use
 your favorite local development environment to continue with developing 
 your application.
 
-### Running Mix Against the Docker Container
-To run mix against the container, setting up some aliases can reduce some 
+### Running Mix and Iex 
+To run mix or iex against the container, setting up some aliases can reduce some 
 typing.
 
 Create a file in the root of the application directory with the following 
@@ -137,10 +141,10 @@ content, e.g. `.<app_name>dev`:
     export APP_CONTAINER_ROOT=/opt
     export APP_NAME=app
 
-    alias mix="docker compose exec app mix"
-    alias amix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/$APP_NAME app mix"
-    alias wmix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web app mix"
-    alias iex="docker compose exec app iex"
+    alias mix="docker compose run --rm app mix"
+    alias amix="docker compose run -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/$APP_NAME --rm app mix"
+    alias wmix="docker compose run -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web --rm app mix"
+    alias iex="docker compose exec app iex -S mix"
 
 Then before starting development, source the file in your shell:
 
