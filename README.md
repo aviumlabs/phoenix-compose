@@ -77,13 +77,13 @@ Running mix ecto.create...
 
 ...
 
-Running docker compose up; press cntl-c to stop.
+Running docker compose up; press ctrl-c to stop.
 
 ...
 
 
 The example application is now running in the foreground and can be shutdown 
-with `cntl-c`.
+with `ctrl-c`.
 
 Service Details
 ---------------
@@ -104,7 +104,7 @@ The prepare script performs the following actions during initialization:
 - generates a random password for the Postgres account 
 
 The prepare script performs the following actions during finalization:
-- prepares the config/dev.exs dev environment:
+- prepares the config/dev.exs and config/test.exs to run in docker:
   - sets the ip address to 0, 0, 0, 0
   - sets the database host
   - sets the database password (pulled from the .env file)
