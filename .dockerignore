@@ -1,8 +1,9 @@
 # docker compose
 docker-compose.yml
 
-# environment file
+# environment files
 .env
+.appdev
 
 # Apple
 .DS_Store

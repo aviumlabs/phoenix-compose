@@ -1,0 +1,2 @@
+alias mix="docker compose exec --rm app mix"
+alias iex="docker compose exec --rm app iex -S mix"

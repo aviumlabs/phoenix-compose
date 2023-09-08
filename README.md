@@ -6,8 +6,6 @@ A Phoenix Framework Docker Compose Repo
 This is a template repo and it can be utilized using the following pattern. 
 
 
-See the __Development__ section below for handy tips on setting aliases.
-
 Creating a Repository From this Template
 ----------------------------------------
 
@@ -30,26 +28,13 @@ Public<br />
 
 Generating your repository...
 
-#### Clone the New Repository
-
-GitHub CLI
-
-    $ cd <projects/directory>
-    $ gh repo clone aviumlabs/gutentag
-
-__or__
-
----
 
 #### Create and Clone a New Public Repository with GitHub CLI
 
-    cd <projects/directory>
-    $ gh repo create gutentag -c -d "A hello world app" --public \
-      -p aviumlabs/phoenix-compose 
-
     $ cd <projects/directory>
     $ gh repo create gutentag -c -d "A hello world app" --public \
       -p aviumlabs/phoenix-compose 
+
 
 Created repository aviumlabs/gutentag on GitHub<br />
 Cloning into 'gutentag'...<br />
@@ -65,7 +50,7 @@ Run `$ ./prepare -h` to get started.
 Running the prepare script to initialize the Phoenix Framework project:
 
     $ cd gutentag
-    $ ./prepare -i gutentag -u
+    $ ./prepare -i gutentag 
 
 ...
 
@@ -135,7 +120,7 @@ To list the current running containers:
 
 | CONTAINER ID     | IMAGE            | ...  | NAMES                     |
 |------------------|------------------|------|---------------------------|
-| nnn              | postgres:15.3... | ...  | \<project\_name\>-db-1    |
+| nnn              | postgres:15.4... | ...  | \<project\_name\>-db-1    |
 | nnn              | aviumlabs/...    | ...  | \<project\_name\>-app-1   |
 
 
@@ -159,8 +144,8 @@ Then run the above steps as follows:
 
 
 ### Docker Images
-- Phoenix Framework image: aviumlabs/phoenix:latest-alpine 
-- PostgreSQL image: postgres:15.3-alpine3.18
+- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.7)
+- PostgreSQL image: postgres:15.4-alpine3.18
 
 Umbrella Project
 ----------------
@@ -183,36 +168,40 @@ your application.
 To run mix or iex against the container, setting up some aliases can reduce some 
 typing.
 
-Create a file in the root of the application directory with the following 
-content, e.g. `.<app_name>dev`:
-
-    export APP_CONTAINER_ROOT=/opt
-    export APP_NAME=app
+A baseline file `.appdev` is provided to set some initial aliases for running 
+mix and iex in docker.
 
     alias mix="docker compose run --rm app mix"
     alias iex="docker compose run --rm app iex -S mix"
 
-    # Only required for an umbrella application 
+
+The following exports and aliases can be added to support development under 
+the umbrella app model.
+
+    export APP_CONTAINER_ROOT=/opt
+    export APP_NAME=<app_name>
+
     alias amix="docker compose run -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/$APP_NAME --rm app mix"
     alias wmix="docker compose run -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web --rm app mix"
 
 Then before starting development, source the file in your shell:
 
     $ cd <app>/<root>
-    $ . ./.<app_name>dev
+    $ . ./.appdev
    
 Comfirm the aliases are set correctly:
 
     $ alias
 
-If you are not using an umbrella application structure, don't forget to remove the 
-`_umbrella/apps` from the above aliases.
+    iex='docker compose exec --rm app iex -S mix'
+    mix='docker compose exec --rm app mix'
+
 
 #### Breakdown of the aliases
 
 * docker compose exec is the docker syntax for executing a command in a container.
 * app is the container to execute the command in.
-* mix is the command to execute.
+* mix/iex is the command to execute.
 
 
 [git-from-template]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
