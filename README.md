@@ -171,8 +171,8 @@ typing.
 A baseline file `.appdev` is provided to set some initial aliases for running 
 mix and iex in docker.
 
-    alias mix="docker compose run --rm app mix"
-    alias iex="docker compose run --rm app iex -S mix"
+    alias mix="docker compose exec app mix"
+    alias iex="docker compose exec app iex -S mix"
 
 
 The following exports and aliases can be added to support development under 
@@ -181,8 +181,8 @@ the umbrella app model.
     export APP_CONTAINER_ROOT=/opt
     export APP_NAME=<app_name>
 
-    alias amix="docker compose run -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/$APP_NAME --rm app mix"
-    alias wmix="docker compose run -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web --rm app mix"
+    alias amix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/$APP_NAME app mix"
+    alias wmix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web app mix"
 
 Then before starting development, source the file in your shell:
 
@@ -193,8 +193,8 @@ Comfirm the aliases are set correctly:
 
     $ alias
 
-    iex='docker compose exec --rm app iex -S mix'
-    mix='docker compose exec --rm app mix'
+    iex='docker compose exec app iex -S mix'
+    mix='docker compose exec app mix'
 
 
 #### Breakdown of the aliases
