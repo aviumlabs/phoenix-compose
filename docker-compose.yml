@@ -14,7 +14,7 @@ services:
     image: "postgres:15.4-alpine3.18"
     restart: always
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
 
 volumes:
   db-data:
