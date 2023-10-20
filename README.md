@@ -22,7 +22,7 @@ This is a template repo and it can be utilized using the following pattern.
 - Select Create a new repository
 
 Repository name: __<project_name>__  
-Description: A hello world application  
+Description: __project_description__  
 Public  
 
 - Select 'Create repository from template'
@@ -38,7 +38,7 @@ Generating your repository...
       -p aviumlabs/phoenix-compose 
 
 
-Created repository \<application\_name\>  on GitHub  
+Created repository \<github\_userid\>\<application\_name\>  on GitHub  
 Cloning into '\<application\_name\>'...  
 
 ---
@@ -49,6 +49,9 @@ Cloning into '\<application\_name\>'...
 The included prepare script will create a Phoenix Framework project. 
 
 Run `$ ./prepare -h` to get started.
+
+
+**Note: docker daemon must be running before running the prepare script.**
 
 Running the prepare script to initialize the Phoenix Framework project:
 
