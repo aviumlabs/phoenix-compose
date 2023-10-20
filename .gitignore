@@ -26,3 +26,6 @@ src/**/_checkouts/
 
 # vim
 *.swp
+
+# ispell
+*.bak

@@ -1,13 +1,14 @@
-A Phoenix Framework Docker Compose Repo
-=======================================
+# A Phoenix Framework Docker Compose Repo
+
 
 ---
+
 
 This is a template repo and it can be utilized using the following pattern. 
 
 
-Creating a Repository From this Template
-----------------------------------------
+## Creating a Repository From this Template
+
 
 [GitHub Documentation] [git-from-template]
 
@@ -20,9 +21,9 @@ Creating a Repository From this Template
 - Select Use this template
 - Select Create a new repository
 
-Repository name: __gutentag__<br />
-Description: A hello world application<br />
-Public<br />
+Repository name: __<project_name>__  
+Description: A hello world application  
+Public  
 
 - Select 'Create repository from template'
 
@@ -31,17 +32,19 @@ Generating your repository...
 
 #### Create and Clone a New Public Repository with GitHub CLI
 
-    $ cd <projects/directory>
-    $ gh repo create gutentag -c -d "A hello world app" --public \
+
+    $ mkdir <project_name>; cd <project_name>
+    $ gh repo create <application_name> -c -d "Application description" --public \
       -p aviumlabs/phoenix-compose 
 
 
-Created repository aviumlabs/gutentag on GitHub<br />
-Cloning into 'gutentag'...<br />
+Created repository \<application\_name\>  on GitHub  
+Cloning into '\<application\_name\>'...  
 
 ---
 
 #### Avium Labs Prepare Script
+
 
 The included prepare script will create a Phoenix Framework project. 
 
@@ -49,8 +52,8 @@ Run `$ ./prepare -h` to get started.
 
 Running the prepare script to initialize the Phoenix Framework project:
 
-    $ cd gutentag
-    $ ./prepare -i gutentag 
+    $ cd <application_name> 
+    $ ./prepare -i <application_name> 
 
 ...
 
@@ -67,11 +70,12 @@ Running docker compose up; press ctrl-c to stop.
 ...
 
 
-The example application is now running in the foreground and can be shutdown 
+The application is now running in the foreground and can be shutdown 
 with `ctrl-c`.
 
-Service Details
----------------
+
+## Service Details
+
 
 The Phoenix Framework application is exposed on port 4000. 
 
@@ -82,7 +86,7 @@ and is then set to /opt/\<application\_name\> after running finalize.
 The default APP\_CONTAINER\_ROOT can be set during the project initialization 
 phase by specifying the -r flag to the prepare script.
 
-    $ ./prepare -i gutentag -r /usr/local
+    $ ./prepare -i <application_name> -r /app
 
 The prepare script performs the following actions during initialization:
 - generates a docker environment file (.env)
@@ -96,6 +100,8 @@ The prepare script performs the following actions during finalization:
 
 
 ### Foreground or Background Services
+
+
 By default aviumlabs/phoenix-compose brings up services in the foreground. To 
 run the services in the background, stop the currently running services:
 
@@ -118,13 +124,14 @@ To list the current running containers:
 
     $ docker container ls
 
-| CONTAINER ID     | IMAGE            | ...  | NAMES                     |
-|------------------|------------------|------|---------------------------|
-| nnn              | postgres:15.4... | ...  | \<project\_name\>-db-1    |
-| nnn              | aviumlabs/...    | ...  | \<project\_name\>-app-1   |
+| CONTAINER ID   | IMAGE            | ...  | NAMES                        |
+|----------------|------------------|------|------------------------------|
+| nnn            | postgres:15.4... | ...  | \<application\_name\>-db-1   |
+| nnn            | aviumlabs/...    | ...  | \<application\_name\>-app-1  |
 
 
 ### Running ecto.reset
+
 
 If the services are running in the foreground; you need to stop the running 
 services `ctrl-c` and then run the following:
@@ -144,27 +151,33 @@ Then run the above steps as follows:
 
 
 ### Docker Images
-- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.7)
+- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.9)
 - PostgreSQL image: postgres:15.4-alpine3.18
 
-Umbrella Project
-----------------
+## Umbrella Project
+
+
 A Phoenix Framework umbrella project can also be created with the prepare 
 script. 
 
-    $ ./prepare -i <app_name> -r /opt -u
-    $ ./prepare -i <app_name> -u
+    $ ./prepare -i <application_name> -r /opt -u
+    $ ./prepare -i <application_name> -u
 
 Official Elixir Umbrella Documentation 
 [Link](https://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-projects.html)
 
-Development
------------
+
+## Development
+
+
 With the src directory bind mounted to the application directory, you can use 
 your favorite local development environment to continue with developing 
 your application.
 
+
 ### Running Mix and Iex 
+
+
 To run mix or iex against the container, setting up some aliases can reduce some 
 typing.
 
@@ -189,7 +202,7 @@ Then before starting development, source the file in your shell:
     $ cd <app>/<root>
     $ . ./.appdev
    
-Comfirm the aliases are set correctly:
+Confirm the aliases are set correctly:
 
     $ alias
 
@@ -198,6 +211,7 @@ Comfirm the aliases are set correctly:
 
 
 #### Breakdown of the aliases
+
 
 * docker compose exec is the docker syntax for executing a command in a container.
 * app is the container to execute the command in.
