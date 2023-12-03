@@ -8,13 +8,19 @@ services:
       - "4000:4000"
     working_dir: ${WORKINGDIR}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   db:
     env_file: .env
     image: "postgres:15.4-alpine3.18"
     restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   db_data:
