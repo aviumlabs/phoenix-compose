@@ -32,6 +32,7 @@ IFS=$'\n\t'
 # Defaults
 ENV_FILE=$(pwd)/.env
 APP_CONTAINER_ROOT=/opt
+MIX_ENV=dev                                 # dev, test, prod
 
 # Help 
 usage() {
@@ -144,6 +145,7 @@ cat > $ENV_FILE <<EnvFile
 # app variables
 APP_CONTAINER_ROOT=$APP_CONTAINER_ROOT
 APP_NAME=$APP_NAME
+MIX_ENV=$MIX_ENV
 WORKINGDIR=$APP_CONTAINER_ROOT
 UMBRELLA=$UMBRELLA
 
@@ -151,6 +153,9 @@ UMBRELLA=$UMBRELLA
 POSTGRES_PASSWORD=$PPWD
 EnvFile
 
+	else
+		printf "Environment file is already existing.\n"
+		exit 1
 	fi
 }
 
@@ -205,6 +210,9 @@ finalize() {
 			fi	       
 			if [[ "$avar" == "POSTGRES_PASSWORD"* ]]; then
 				PPWD=$aval
+			fi
+			if [[ "$avar" == "MIX_ENV"* ]]; then
+				MIX_ENV=$aval
 			fi
 
 		done < $ENV_FILE
