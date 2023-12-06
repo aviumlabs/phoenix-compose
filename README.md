@@ -53,28 +53,36 @@ Run `$ ./prepare -h` to get started.
 
 **Note: docker daemon must be running before running the prepare script.**
 
+#### Initailize the Application Setup
+
+
 Running the prepare script to initialize the Phoenix Framework project:
+
 
     $ cd <application_name> 
     $ ./prepare -i <application_name> 
 
-...
+> ...
+>
+> We are almost there! 
+>
 
-We are almost there! ...
+### Finalize the Application Setup
 
     $ ./prepare -f
     
-Running mix ecto.create...
-
-...
-
-Running docker compose up; press ctrl-c to stop.
-
-...
+> Running mix ecto.create...
+> 
+> ...
+> 
+> Running docker compose up; press ctrl-c to stop.
+> 
+> ...
+> 
 
 
 The application is now running in the foreground and can be shutdown 
-with `ctrl-c`.
+with `ctrl-c a`.
 
 
 ## Service Details
@@ -82,24 +90,25 @@ with `ctrl-c`.
 
 The Phoenix Framework application is exposed on port 4000. 
 
+
 The src directory in the project working directory is bind mounted to the 
-APP\_CONTAINER\_ROOT directory which by default is set to /opt when initialized
-and is then set to /opt/\<application\_name\> after running finalize.
+APP\_CONTAINER\_ROOT directory which by default is set to /opt when initialized 
+and is then set to /opt/\<application\_name\> after running finalize.  
 
 The default APP\_CONTAINER\_ROOT can be set during the project initialization 
-phase by specifying the -r flag to the prepare script.
+phase by specifying the -r flag to the prepare script.  
 
     $ ./prepare -i <application_name> -r /app
 
-The prepare script performs the following actions during initialization:
-- generates a docker environment file (.env)
-- generates a random password for the Postgres account 
+The prepare script performs the following actions during initialization:  
+- generates a docker environment file (.env)  
+- generates a random password for the Postgres account  
 
-The prepare script performs the following actions during finalization:
-- prepares the config/dev.exs and config/test.exs to run in docker:
-  - sets the ip address to 0, 0, 0, 0
-  - sets the database host
-  - sets the database password (pulled from the .env file)
+The prepare script performs the following actions during finalization:  
+- prepares the config/dev.exs and config/test.exs to run in docker:  
+  - sets the ip address to 0, 0, 0, 0  
+  - sets the database host  
+  - sets the database password (pulled from the .env file)  
 
 
 ### Foreground or Background Services
@@ -113,19 +122,27 @@ run the services in the background, stop the currently running services:
     
 To stop an individual service:
 
+
     $ docker compose stop [app, db]
+
 
 To start an individual service:
 
+
     $ docker compose start [app, db]
+
 
 To view the the logs of a background service:
 
+
     $ docker logs -f <running_container_name>
+
 
 To list the current running containers:
 
+
     $ docker container ls
+
 
 | CONTAINER ID   | IMAGE            | ...  | NAMES                        |
 |----------------|------------------|------|------------------------------|
@@ -139,14 +156,18 @@ To list the current running containers:
 If the services are running in the foreground; you need to stop the running 
 services `ctrl-c` and then run the following:
 
+
     $ docker compose up db
     $ mix ecto.reset
     $ ctrl-c
     $ docker compose up
 
+
 Alternatively, if the docker services are running in the background;
 
+
 Then run the above steps as follows:
+
 
     $ docker compose stop app
     $ mix ecto.reset
@@ -180,7 +201,7 @@ Official Elixir Umbrella Documentation
 ## Development
 
 
-With the src directory bind mounted to the application directory, you can use 
+With the **src** directory bind mounted to the application directory, you can use 
 your favorite local development environment to continue with developing 
 your application.
 
