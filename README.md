@@ -155,7 +155,7 @@ To list the current running containers:
 
 | CONTAINER ID   | IMAGE            | ...  | NAMES                        |
 |----------------|------------------|------|------------------------------|
-| nnn            | postgres:15.4... | ...  | \<application\_name\>-db-1   |
+| nnn            | postgres:16.1... | ...  | \<application\_name\>-db-1   |
 | nnn            | aviumlabs/...    | ...  | \<application\_name\>-app-1  |
 
 
