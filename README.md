@@ -30,7 +30,7 @@ Public
 Generating your repository...
 
 
-#### Create and Clone a New Public Repository with GitHub CLI
+### Create and Clone a New Public Repository with GitHub CLI
 
 
     $ mkdir <project_name>; cd <project_name>
@@ -43,7 +43,7 @@ Cloning into '\<application\_name\>'...
 
 ---
 
-#### Avium Labs Prepare Script
+### Avium Labs Prepare Script
 
 
 The included prepare script will create a Phoenix Framework project. 
@@ -63,9 +63,13 @@ Running the prepare script to initialize the Phoenix Framework project:
     $ cd <application_name> 
     $ ./prepare -i <application_name> 
 
-> ...  
 >
-> We are almost there!   
+> Initializing Phoenix Framework project...  
+> Application container root............... /opt  
+> Application name......................... \<application\_name>  
+> Running phx.new...  
+>
+> We are almost there!  
 >
 
 
