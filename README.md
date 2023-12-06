@@ -63,23 +63,25 @@ Running the prepare script to initialize the Phoenix Framework project:
     $ cd <application_name> 
     $ ./prepare -i <application_name> 
 
-> ...
+> ...  
 >
-> We are almost there! 
+> We are almost there!   
 >
 
 
 #### Finalize the Application Setup
 
+
     $ ./prepare -f
+
     
-> Running mix ecto.create...
+> Running mix ecto.create...  
 > 
-> ...
+> ...  
 > 
-> Running docker compose up; press ctrl-c to stop.
+> Running docker compose up; press ctrl-c to stop.  
 > 
-> ...
+> ...  
 > 
 
 
