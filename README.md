@@ -154,8 +154,11 @@ Then run the above steps as follows:
 
 
 ### Docker Images
-- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.9)
+
+
+- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.10)
 - PostgreSQL image: postgres:15.4-alpine3.18
+
 
 ## Umbrella Project
 
@@ -163,10 +166,14 @@ Then run the above steps as follows:
 A Phoenix Framework umbrella project can also be created with the prepare 
 script. 
 
+
     $ ./prepare -i <application_name> -r /opt -u
     $ ./prepare -i <application_name> -u
 
+
 Official Elixir Umbrella Documentation 
+
+
 [Link](https://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-projects.html)
 
 
@@ -184,8 +191,9 @@ your application.
 To run mix or iex against the container, setting up some aliases can reduce some 
 typing.
 
-A baseline file `.appdev` is provided to set some initial aliases for running 
+An initial alias file `.appdev` is provided to set a few aliases for running 
 mix and iex in docker.
+
 
     alias mix="docker compose exec app mix"
     alias iex="docker compose exec app iex -S mix"
@@ -194,18 +202,23 @@ mix and iex in docker.
 The following exports and aliases can be added to support development under 
 the umbrella app model.
 
+
     export APP_CONTAINER_ROOT=/opt
     export APP_NAME=<app_name>
 
     alias amix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/$APP_NAME app mix"
     alias wmix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web app mix"
 
+
 Then before starting development, source the file in your shell:
+
 
     $ cd <app>/<root>
     $ . ./.appdev
    
+
 Confirm the aliases are set correctly:
+
 
     $ alias
 
