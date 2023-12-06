@@ -78,7 +78,8 @@ Running the prepare script to initialize the Phoenix Framework project:
 
     $ ./prepare -f
 
-    
+
+>    
 > Running mix ecto.create...  
 > 
 > ...  

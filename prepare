@@ -180,10 +180,10 @@ initialize() {
 
 		if [[ ${UMBRELLA} == true ]]; then
 			printf "Running phx.new umbrella...\n"
-			docker compose run --rm app mix phx.new --umbrella --install $APP_NAME
+			docker compose run --rm app mix phx.new --umbrella --install $APP_NAME --binary-id
 		else
 			printf "Running phx.new...\n"
-			docker compose run --rm app mix phx.new --install $APP_NAME
+			docker compose run --rm app mix phx.new --install $APP_NAME --binary-id
 		fi
 	else
 		usage
