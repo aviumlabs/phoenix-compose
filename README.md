@@ -53,6 +53,7 @@ Run `$ ./prepare -h` to get started.
 
 **Note: docker daemon must be running before running the prepare script.**
 
+
 #### Initailize the Application Setup
 
 
@@ -67,7 +68,8 @@ Running the prepare script to initialize the Phoenix Framework project:
 > We are almost there! 
 >
 
-### Finalize the Application Setup
+
+#### Finalize the Application Setup
 
     $ ./prepare -f
     
