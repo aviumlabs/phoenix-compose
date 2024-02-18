@@ -1,6 +1,8 @@
 services:
   app:
-    env_file: .env
+    env_file: 
+      - path: ./.env 
+        required: true
     image: "aviumlabs/phoenix:latest-alpine" 
     volumes:
       - ./src:${APP_CONTAINER_ROOT}
@@ -11,7 +13,9 @@ services:
       db:
         condition: service_healthy
   db:
-    env_file: .env
+    env_file: 
+      - path: ./.env 
+        required: true
     image: "postgres:16.1-alpine3.19"
     restart: always
     volumes:
