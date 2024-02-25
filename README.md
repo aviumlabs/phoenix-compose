@@ -15,17 +15,22 @@ This is a template repo and it can be utilized using the following pattern.
 
 ### Example Project
 
+
 #### Create a New Repository on GitHub.com
+
 
 - Go to https://github.com/aviumlabs/phoenix-compose
 - Select Use this template
 - Select Create a new repository
 
+
 Repository name: __<project_name>__  
 Description: __project_description__  
 Public  
 
+
 - Select 'Create repository from template'
+
 
 Generating your repository...
 
@@ -33,7 +38,6 @@ Generating your repository...
 ### Create and Clone a New Public Repository with GitHub CLI
 
 
-    $ mkdir <project_name>; cd <project_name>
     $ gh repo create <application_name> -c -d "Application description" --public \
       -p aviumlabs/phoenix-compose 
 
@@ -41,12 +45,15 @@ Generating your repository...
 Created repository \<github\_userid\>\<application\_name\>  on GitHub  
 Cloning into '\<application\_name\>'...  
 
+
 ---
+
 
 ### Avium Labs Prepare Script
 
 
 The included prepare script will create a Phoenix Framework project. 
+
 
 Run `$ ./prepare -h` to get started.
 
@@ -107,7 +114,9 @@ and is then set to /opt/\<application\_name\> after running finalize.
 The default APP\_CONTAINER\_ROOT can be set during the project initialization 
 phase by specifying the -r flag to the prepare script.  
 
+
     $ ./prepare -i <application_name> -r /app
+
 
 The prepare script performs the following actions during initialization:  
 - generates a docker environment file (.env)  
@@ -126,8 +135,10 @@ The prepare script performs the following actions during finalization:
 By default aviumlabs/phoenix-compose brings up services in the foreground. To 
 run the services in the background, stop the currently running services:
 
+
     $ ctrl-c
     $ docker compose up -d
+
     
 To stop an individual service:
 
