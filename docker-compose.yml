@@ -16,7 +16,7 @@ services:
     env_file: 
       - path: ./.env 
         required: true
-    image: "postgres:16.1-alpine3.19"
+    image: "postgres:16.2-alpine3.19"
     restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
