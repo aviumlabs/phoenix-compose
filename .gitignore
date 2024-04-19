@@ -1,3 +1,6 @@
+# Secrets
+.secret_*
+
 # Apple
 .DS_Store
 
@@ -10,7 +13,6 @@ src/**/.fetch
 *.ez
 src/**/config/*.secret.exs
 src/**/.elixir_ls/
-.env
 
 # Erlang
 *.eunit

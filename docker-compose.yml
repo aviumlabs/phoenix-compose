@@ -25,6 +25,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    secrets:
+      - postgres_password
+    environment:
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
 
 volumes:
   db_data:
+
+secrets:
+  postgres_password:
+    file: ./.secret_db

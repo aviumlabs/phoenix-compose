@@ -31,6 +31,7 @@ IFS=$'\n\t'
 
 # Defaults
 ENV_FILE=$(pwd)/.env
+DB_SECRET_FILE=$(pwd)/.secret_db
 APP_CONTAINER_ROOT=/opt
 MIX_ENV=dev                                 # dev, test, prod
 
@@ -134,11 +135,6 @@ gen_rand_pass() {
 
 # Generate the docker environment file if it does not exist
 gen_env_file() {
-
-	# Generate a random password for Postgres
-	gen_rand_pass
-
-	
 	if [ ! -f $ENV_FILE ]; then
 
 cat > $ENV_FILE <<EnvFile
@@ -148,13 +144,25 @@ APP_NAME=$APP_NAME
 MIX_ENV=$MIX_ENV
 WORKINGDIR=$APP_CONTAINER_ROOT
 UMBRELLA=$UMBRELLA
-
-# db variables
-POSTGRES_PASSWORD=$PPWD
 EnvFile
 
 	else
 		printf "Environment file is already existing.\n"
+		exit 1
+	fi
+}
+
+gen_db_secret_file() {
+	# Generate a random password for Postgres
+	gen_rand_pass
+
+	if [ ! -f $DB_SECRET_FILE ]; then
+
+cat > $DB_SECRET_FILE <<DbFile
+$PPWD
+DbFile
+	else
+		printf "DB secret file is already existing.\n"
 		exit 1
 	fi
 }
@@ -177,6 +185,9 @@ initialize() {
 		
 		# Generate the initial docker environment file
 		gen_env_file
+
+		# Generate database secret
+		gen_db_secret_file
 
 		if [[ ${UMBRELLA} == true ]]; then
 			printf "Running phx.new umbrella...\n"
@@ -208,14 +219,19 @@ finalize() {
 			if [[ "$avar" == "UMBRELLA"* ]]; then
 			       UMBRELLA=$aval
 			fi	       
-			if [[ "$avar" == "POSTGRES_PASSWORD"* ]]; then
-				PPWD=$aval
-			fi
 			if [[ "$avar" == "MIX_ENV"* ]]; then
 				MIX_ENV=$aval
 			fi
 
 		done < $ENV_FILE
+
+		if [ ! -f "$DB_SECRET_FILE" ]; then
+			usage
+		else
+			while read -r secret; do
+				PPWD="$secret"
+			done < $DB_SECRET_FILE
+		fi
 
 		# Set the docker working directory
 		# This is the directory where the app will live in the 
@@ -250,7 +266,6 @@ finalize() {
 		if [ $? -gt 0 ]; then
 			sed_error
 		fi
-
 
 		# Update the WORKINGDIR in the env file
 		update_file=$ENV_FILE
