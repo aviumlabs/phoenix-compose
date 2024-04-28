@@ -35,7 +35,7 @@ Public
 Generating your repository...
 
 
-### Create and Clone a New Public Repository with GitHub CLI
+### Create and Clone a New Repository with GitHub CLI
 
 
     $ gh repo create <application_name> -c -d "Application description" --public \
@@ -104,7 +104,7 @@ with `ctrl-c a`.
 ## Service Details
 
 
-The Phoenix Framework application is exposed on port 4000. 
+The Phoenix Framework application is exposed on port 4000 (default). 
 
 
 The src directory in the project working directory is bind mounted to the 
@@ -126,7 +126,7 @@ The prepare script performs the following actions during finalization:
 - prepares the config/dev.exs and config/test.exs to run in docker:  
   - sets the ip address to 0, 0, 0, 0  
   - sets the database host  
-  - sets the database password (pulled from the .env file)  
+  - sets the database password (pulled from the .secret\_db file)
 
 
 ### Foreground or Background Services
@@ -164,10 +164,10 @@ To list the current running containers:
     $ docker container ls
 
 
-| CONTAINER ID   | IMAGE            | ...  | NAMES                        |
-|----------------|------------------|------|------------------------------|
-| nnn            | postgres:16.1... | ...  | \<application\_name\>-db-1   |
-| nnn            | aviumlabs/...    | ...  | \<application\_name\>-app-1  |
+| CONTAINER ID   | IMAGE                           | ... | NAMES                        |
+|----------------|---------------------------------|-----|------------------------------|
+| nnn            | aviumlabs/phoenix:latest-alpine | ... | \<application\_name\>-app-1  |
+| nnn            | postgres:16.2-alpine3.19        | ... | \<application\_name\>-db-1   |
 
 
 ### Running ecto.reset
@@ -197,8 +197,8 @@ Then run the above steps as follows:
 ### Docker Images
 
 
-- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.10)
-- PostgreSQL image: postgres:15.4-alpine3.18
+- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.12)
+- PostgreSQL image: postgres:16.2-alpine3.19
 
 
 ## Umbrella Project
