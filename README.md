@@ -38,8 +38,8 @@ Generating your repository...
 ### Create and Clone a New Repository with GitHub CLI
 
 
-    $ gh repo create <application_name> -c -d "Application description" --public \
-      -p aviumlabs/phoenix-compose 
+    gh repo create <application_name> -c -d "Application description" \
+    --public|private -p aviumlabs/phoenix-compose 
 
 
 Created repository \<github\_userid\>\<application\_name\>  on GitHub  
@@ -55,7 +55,7 @@ Cloning into '\<application\_name\>'...
 The included prepare script will create a Phoenix Framework project. 
 
 
-Run `$ ./prepare -h` to get started.
+Run `./prepare -h` to get started.
 
 
 **Note: docker daemon must be running before running the prepare script.**
@@ -68,7 +68,9 @@ Running the prepare script to initialize the Phoenix Framework project:
 
 
     $ cd <application_name> 
-    $ ./prepare -i <application_name> 
+
+    ./prepare -i <application_name> 
+
 
 >
 > Initializing Phoenix Framework project...  
@@ -83,7 +85,7 @@ Running the prepare script to initialize the Phoenix Framework project:
 #### Finalize the Application Setup
 
 
-    $ ./prepare -f
+    ./prepare -f
 
 
 >    
@@ -115,7 +117,7 @@ The default APP\_CONTAINER\_ROOT can be set during the project initialization
 phase by specifying the -r flag to the prepare script.  
 
 
-    $ ./prepare -i <application_name> -r /app
+    ./prepare -i <application_name> -r /app
 
 
 The prepare script performs the following actions during initialization:  
@@ -137,31 +139,32 @@ run the services in the background, stop the currently running services:
 
 
     $ ctrl-c
-    $ docker compose up -d
+
+    docker compose up -d
 
     
 To stop an individual service:
 
 
-    $ docker compose stop [app, db]
+    docker compose stop [app, db]
 
 
 To start an individual service:
 
 
-    $ docker compose start [app, db]
+    docker compose start [app, db]
 
 
 To view the the logs of a background service:
 
 
-    $ docker logs -f <running_container_name>
+    docker logs -f <running_container_name>
 
 
 To list the current running containers:
 
 
-    $ docker container ls
+    docker container ls
 
 
 | CONTAINER ID   | IMAGE                           | ... | NAMES                        |
@@ -177,10 +180,13 @@ If the services are running in the foreground; you need to stop the running
 services `ctrl-c` and then run the following:
 
 
-    $ docker compose up db
-    $ mix ecto.reset
-    $ ctrl-c
-    $ docker compose up
+    docker compose up db
+
+    mix ecto.reset
+
+    ctrl-c
+
+    docker compose up
 
 
 Alternatively, if the docker services are running in the background;
@@ -189,9 +195,11 @@ Alternatively, if the docker services are running in the background;
 Then run the above steps as follows:
 
 
-    $ docker compose stop app
-    $ mix ecto.reset
-    $ docker compose start app
+    docker compose stop app
+
+    mix ecto.reset
+
+    docker compose start app
 
 
 ### Docker Images
@@ -208,8 +216,9 @@ A Phoenix Framework umbrella project can also be created with the prepare
 script. 
 
 
-    $ ./prepare -i <application_name> -r /opt -u
-    $ ./prepare -i <application_name> -u
+    ./prepare -i <application_name> -r /opt -u
+
+    ./prepare -i <application_name> -u
 
 
 Official Elixir Umbrella Documentation 
@@ -255,16 +264,19 @@ Then before starting development, source the file in your shell:
 
 
     $ cd <app>/<root>
-    $ . ./.appdev
+
+    . ./.appdev
    
 
 Confirm the aliases are set correctly:
 
 
-    $ alias
+    alias
 
-    iex='docker compose exec app iex -S mix'
-    mix='docker compose exec app mix'
+> 
+> iex='docker compose exec app iex -S mix'
+> mix='docker compose exec app mix'
+>
 
 
 #### Breakdown of the aliases
