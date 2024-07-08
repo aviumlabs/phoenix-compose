@@ -170,7 +170,7 @@ To list the current running containers:
 | CONTAINER ID   | IMAGE                           | ... | NAMES                        |
 |----------------|---------------------------------|-----|------------------------------|
 | nnn            | aviumlabs/phoenix:latest-alpine | ... | \<application\_name\>-app-1  |
-| nnn            | postgres:16.2-alpine3.19        | ... | \<application\_name\>-db-1   |
+| nnn            | postgres:16.3-alpine3.20        | ... | \<application\_name\>-db-1   |
 
 
 ### Running ecto.reset
@@ -205,8 +205,8 @@ Then run the above steps as follows:
 ### Docker Images
 
 
-- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.12)
-- PostgreSQL image: postgres:16.2-alpine3.19
+- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.14)
+- PostgreSQL image: postgres:16.3-alpine3.20
 
 
 ## Umbrella Project
