@@ -1,10 +1,25 @@
-# A Phoenix Framework Docker Compose Repo
+# A Phoenix Framework Rapid Development Environment
+
+This project is designed to be a rapid development environment based on 
+the amazing work of the [Phoenix Framework](https://www.phoenixframework.org) 
+project.
 
 
 ---
 
 
-This is a template repo and it can be utilized using the following pattern. 
+The repository is setup as a GitHub template repository, designed to be cloned 
+into a new project to begin immediate development. 
+
+
+The stack is as follows:
+* Alpine Linux 3.x
+* Erlang 27.x
+* Elixir 1.x
+* Phoenix Framework 1.x
+* PostgreSQL 16.x, 17.x (coming soon)
+
+
 
 
 ## Creating a Repository From this Template
@@ -29,7 +44,7 @@ Description: __project_description__
 Public  
 
 
-- Select 'Create repository from template'
+Select 'Create repository from template'
 
 
 Generating your repository...
