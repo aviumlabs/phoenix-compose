@@ -13,10 +13,10 @@ This is a template repo and it can be utilized using the following pattern.
 [GitHub Documentation] [git-from-template]
 
 
-### Example Project
+## Example Project
 
 
-#### Create a New Repository on GitHub.com
+### Create a New Repository on GitHub.com
 
 
 - Go to https://github.com/aviumlabs/phoenix-compose
@@ -38,104 +38,39 @@ Generating your repository...
 ### Create and Clone a New Repository with GitHub CLI
 
 
-    gh repo create <application_name> -c -d "Application description" \
-    --public|private -p aviumlabs/phoenix-compose 
+```shell
+gh repo create <application_name> -c -d "Application description" \
+--public|private -p aviumlabs/phoenix-compose 
+```
 
 
-Created repository \<github\_userid\>\<application\_name\>  on GitHub  
-Cloning into '\<application\_name\>'...  
-
-
----
-
-
-### Avium Labs Prepare Script
-
-
-The included prepare script will create a Phoenix Framework project. 
-
-
-Run `./prepare -h` to get started.
-
-
-**Note: docker daemon must be running before running the prepare script.**
-
-
-#### Initailize the Application Setup
-
-
-Running the prepare script to initialize the Phoenix Framework project:
-
-
-    $ cd <application_name> 
-
-    ./prepare -i <application_name> 
-
-
->
-> Initializing Phoenix Framework project...  
-> Application container root............... /opt  
-> Application name......................... \<application\_name>  
-> Running phx.new...  
->
-> We are almost there!  
->
-
-
-#### Finalize the Application Setup
-
-
-    ./prepare -f
-
-
->    
-> Running mix ecto.create...  
 > 
-> ...  
-> 
-> Running docker compose up; press ctrl-c to stop.  
-> 
-> ...  
+> Created repository \<github\_userid\>\<application\_name\>  on GitHub  
+> Cloning into '\<application\_name\>'...  
 > 
 
+The directory structure should now look like this:
+* myapp
+  * /src
+  * /docs
+    * /images
+    * /pdf
+* Dockerfile
+* LICENSE
+* README.md
 
-The application is now running in the foreground and can be shutdown 
-with `ctrl-c a`.
 
 
-## Service Details
-
-
-The Phoenix Framework application is exposed on port 4000 (default). 
+The Phoenix Framework application is exposed on port 4000 by default. 
 
 
 The src directory in the project working directory is bind mounted to the 
-APP\_CONTAINER\_ROOT directory which by default is set to /opt when initialized 
-and is then set to /opt/\<application\_name\> after running finalize.  
-
-The default APP\_CONTAINER\_ROOT can be set during the project initialization 
-phase by specifying the -r flag to the prepare script.  
-
-
-    ./prepare -i <application_name> -r /app
-
-
-The prepare script performs the following actions during initialization:  
-- generates a docker environment file (.env)  
-- generates a random password for the Postgres account  
-
-The prepare script performs the following actions during finalization:  
-- prepares the config/dev.exs and config/test.exs to run in docker:  
-  - sets the ip address to 0, 0, 0, 0  
-  - sets the database host  
-  - sets the database password (pulled from the .secret\_db file)
+APP\_CONTAINER\_ROOT/APP\_NAME directory which by default is set to 
+/opt/phoenix/$APP_NAME.
 
 
 ### Foreground or Background Services
 
-
-By default aviumlabs/phoenix-compose brings up services in the foreground. To 
-run the services in the background, stop the currently running services:
 
 
     $ ctrl-c
@@ -205,26 +140,9 @@ Then run the above steps as follows:
 ### Docker Images
 
 
-- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.14)
+- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.18)
 - PostgreSQL image: postgres:16.3-alpine3.20
 
-
-## Umbrella Project
-
-
-A Phoenix Framework umbrella project can also be created with the prepare 
-script. 
-
-
-    ./prepare -i <application_name> -r /opt -u
-
-    ./prepare -i <application_name> -u
-
-
-Official Elixir Umbrella Documentation 
-
-
-[Link](https://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-projects.html)
 
 
 ## Development
@@ -288,3 +206,17 @@ Confirm the aliases are set correctly:
 
 
 [git-from-template]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
+
+
+## Application Testing
+
+The Avium Labs Phoenix docker image includes the MIX\_ENV environment variable 
+in the Dockerfile.   
+
+`MIX_ENV=test`  
+
+Run docker compose down/docker compose up to load the updated configuration and 
+then run `mix test`.   
+
+Change the MIX\_ENV setting back to `dev`, run docker compose down/up to go back 
+to development mode. 
