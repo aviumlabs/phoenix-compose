@@ -41,12 +41,15 @@ Generating your repository...
 ```shell
 gh repo create <application_name> -c -d "Application description" \
 --public|private -p aviumlabs/phoenix-compose 
+
+gh repo create myapp -c -d "MyApp Test Application" --private -p aviumlabs/phoenix-compose
 ```
 
 
 > 
-> Created repository \<github\_userid\>\<application\_name\>  on GitHub  
-> Cloning into '\<application\_name\>'...  
+> Created repository \<github\_userid\>/myapp  on GitHub
+> https://github.com/\<github\_userid\>
+> Cloning into 'myapp'...  
 > 
 
 The directory structure should now look like this:
