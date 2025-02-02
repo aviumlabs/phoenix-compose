@@ -17,46 +17,110 @@ The stack is as follows:
 * Erlang 27.x
 * Elixir 1.x
 * Phoenix Framework 1.x
-* PostgreSQL 16.x, 17.x (coming soon)
+* PostgreSQL 17.x
 
 
+After creating a new project based on this repository, the directory layout is 
+as follows:
+
+
+> 
+> parent_directory
+>   LICENSE
+>   README.md
+>   compose.yaml
+>   src/
+>   .env
+>   .appdev
+> 
+
+
+parent\_directory is the name of the project/repository used in the 
+`gh repo create` command. See Creating a Repository From this Template below.
+
+
+The src directory is empty until docker compose up is run. On the first run 
+of docker compose up, the src directory is bind mounted into the phoenix 
+framework application (app) container. 
+
+
+The Phoenix Framework phx.new command is automatically run and the src 
+directory is populated with the Phoenix Framework application. The  
+configuration files dev.exs and test.exs are automatically updated to support 
+the docker runtime. These files are also automatically updated to support 
+connecting to the included PostgreSQL database (db) container.
+
+
+Prior to running `docker compose up` the first time, one file must be 
+generated - the .secret_db file containing the database connection 
+credential.
+
+
+Here are a couple of shell commands that can be used to generate this file. 
+
+```shell
+# macOS
+date +%s | shasum -a 256 | base64 | head -c14 > .secret_db
+
+# linux-gnu
+date +%s | sha256sum | base64 | head -c14 > .secret_db
+```
+
+
+Save the following as a PowerShell script and run the script to generate 
+the database credential file. 
+
+```PowerShell
+$DB_SECRET_FILE = "$pwd\.secret_db"
+
+# Generate a random password of length PasswordLength, no special characters 
+# included 
+# lowercase alphabet characters [char]97..[char]122
+# uppercase alphabet characters [char]65..[char]90
+# numbers [char]48..[char]57
+# based on "The Random Password Generator for PowerShell Core 6 and 7" by
+# mtsimmons
+function Get-RandomPassword {
+    param (
+        [int]$PasswordLength = 14
+    )
+    $charList = [char]97..[char]122 + [char]65..[char]90 + [char]48..[char]57
+
+    $tmp = @()
+    For ($i = 0; $i -lt $PasswordLength + 1; $i++) {
+        $tmp += $charList | Get-Random
+    }
+
+    $pass = -join $tmp
+    
+    return $pass
+}
+
+# Write the database secret file
+function Write-DbSecret {
+    $line1 = Get-RandomPassword
+    
+    $line1 | Out-File -FilePath $DB_SECRET_FILE -NoClobber
+}
+
+# Script Driver
+function main {
+    Write-DbSecret
+}
+
+main
+```
 
 
 ## Creating a Repository From this Template
 
 
-[GitHub Documentation] [git-from-template]
-
-
-## Example Project
-
-
-### Create a New Repository on GitHub.com
-
-
-- Go to https://github.com/aviumlabs/phoenix-compose
-- Select Use this template
-- Select Create a new repository
-
-
-Repository name: __<project_name>__  
-Description: __project_description__  
-Public  
-
-
-Select 'Create repository from template'
-
-
-Generating your repository...
-
-
-### Create and Clone a New Repository with GitHub CLI
-
-
 ```shell
+# general command syntax
 gh repo create <application_name> -c -d "Application description" \
 --public|private -p aviumlabs/phoenix-compose 
 
+# specific example
 gh repo create myapp -c -d "MyApp Test Application" --private -p aviumlabs/phoenix-compose
 ```
 
@@ -67,79 +131,170 @@ gh repo create myapp -c -d "MyApp Test Application" --private -p aviumlabs/phoen
 > Cloning into 'myapp'...  
 > 
 
-The directory structure should now look like this:
-* myapp
-  * /src
-  * /docs
-    * /images
-    * /pdf
-* Dockerfile
-* LICENSE
+
+## Initializing Your Phoenix Framework Application
+
+
+After creating a new project through `gh repo create` and creating the 
+database secret file, run `docker compose up`. 
+
+
+The included .env file sets the values required for initializing the 
+phoenix container and the password of the database.
+
+
+```shell
+docker compose up
+
+> 
+> app-1  | Updating dev.exs...
+> app-1  | Compiling 15 files (.ex)
+> app-1  | Generated app app
+> app-1  | The database for App.Repo has been created
+> app-1  | Updating test.exs...
+> app-1  | [info] Running AppWeb.Endpoint with Bandit 1.6.7 at 0.0.0.0:4000 (http)
+> app-1  | [info] Access AppWeb.Endpoint at http://localhost:4000
+> app-1  | [watch] build finished, watching for changes...
+> app-1  | 
+> app-1  | Rebuilding...
+> app-1  | 
+> app-1  | Done in 1038ms.
+> 
+```
+
+
+Open http://localhost:4000 to the default landing page of a 
+Phoenix Framework application.
+
+
+The src directory is now populated with the application files and can be 
+edited with your favorite editor.
+
+
 * README.md
+* assets
+* deps
+* _build
+* config 
+* lib
+* mix.exs
+* mix.lock
+* priv
+* test
 
 
-
-The Phoenix Framework application is exposed on port 4000 by default. 
-
-
-The src directory in the project working directory is bind mounted to the 
-APP\_CONTAINER\_ROOT/APP\_NAME directory which by default is set to 
-/opt/phoenix/$APP_NAME.
+Edit src/lib/my_webapp/controllers/page_html/home.html.eex
 
 
-### Foreground or Background Services
+Search for Phoenix Framework and insert some text like 
+MyApp powered by Phoenix Framework.
 
 
+Save the file and go back to your browser and you will automatically see 
+the change.
 
-    $ ctrl-c
 
-    docker compose up -d
+### Add a Project Dependency
 
-    
+
+Edit src/mix.exs and add the dependency to the dependency section:
+
+```
+defp deps do
+    [
+    ...
+    ]
+end
+```
+
+
+```shell
+# Set an alias for run mix in the container
+. ./.appdev
+
+# Run mix to get the dependency
+mix deps.get
+``` 
+
+
+## Application Testing
+
+
+Edit the `.env` file and change the MIX\_ENV variable.
+
+
+`MIX_ENV=test`  
+
+
+Run docker compose down/docker compose up to load the updated configuration 
+and then run `mix test`.  
+
+
+Change the MIX\_ENV setting back to `dev`, run docker compose down/up to go 
+back to development mode.
+
+
+## Additional Docker Commands
+
+
+Running the docker containers in the background:
+
+```shell
+docker compose up -d
+```
+   
 To stop an individual service:
 
-
-    docker compose stop [app, db]
+```shell
+docker compose stop [app, db]
+```
 
 
 To start an individual service:
 
-
-    docker compose start [app, db]
+```shell
+docker compose start [app, db]
+```
 
 
 To view the the logs of a background service:
 
-
-    docker logs -f <running_container_name>
+```shell
+docker logs -f [app, db]
+```
 
 
 To list the current running containers:
 
-
-    docker container ls
-
-
-| CONTAINER ID   | IMAGE                           | ... | NAMES                        |
-|----------------|---------------------------------|-----|------------------------------|
-| nnn            | aviumlabs/phoenix:latest-alpine | ... | \<application\_name\>-app-1  |
-| nnn            | postgres:16.3-alpine3.20        | ... | \<application\_name\>-db-1   |
+```shell
+docker container ls
+```
 
 
-### Running ecto.reset
+| CONTAINER ID   | IMAGE                           | ... | NAMES              |
+|----------------|---------------------------------|-----|--------------------|
+| nnn            | aviumlabs/phoenix:latest-alpine | ... | myapp-app-1        |
+| nnn            | postgres:17-alpine3.21          | ... | myapp-db-1         |
+
+
+## Resetting the Database
+
+### Run ecto.reset
 
 
 If the services are running in the foreground; you need to stop the running 
 services `ctrl-c` and then run the following:
 
 
-    docker compose up db
+```shell
+docker compose up db
 
-    mix ecto.reset
+mix ecto.reset
 
-    ctrl-c
+ctrl-c
 
-    docker compose up
+docker compose up
+```
 
 
 Alternatively, if the docker services are running in the background;
@@ -147,94 +302,13 @@ Alternatively, if the docker services are running in the background;
 
 Then run the above steps as follows:
 
+```shell
+docker compose stop app
 
-    docker compose stop app
+mix ecto.reset
 
-    mix ecto.reset
-
-    docker compose start app
-
-
-### Docker Images
+docker compose start app
+```
 
 
-- Phoenix Framework image: aviumlabs/phoenix:latest-alpine (Phoenix 1.7.18)
-- PostgreSQL image: postgres:16.3-alpine3.20
-
-
-
-## Development
-
-
-With the **src** directory bind mounted to the application directory, you can use 
-your favorite local development environment to continue with developing 
-your application.
-
-
-### Running Mix and Iex 
-
-
-To run mix or iex against the container, setting up some aliases can reduce some 
-typing.
-
-An initial alias file `.appdev` is provided to set a few aliases for running 
-mix and iex in docker.
-
-
-    alias mix="docker compose exec app mix"
-    alias iex="docker compose exec app iex -S mix"
-
-
-The following exports and aliases can be added to support development under 
-the umbrella app model.
-
-
-    export APP_CONTAINER_ROOT=/opt
-    export APP_NAME=<app_name>
-
-    alias amix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/$APP_NAME app mix"
-    alias wmix="docker compose exec -w "$APP_CONTAINER_ROOT/$APP_NAME"_umbrella/apps/"$APP_NAME"_web app mix"
-
-
-Then before starting development, source the file in your shell:
-
-
-    $ cd <app>/<root>
-
-    . ./.appdev
-   
-
-Confirm the aliases are set correctly:
-
-
-    alias
-
-> 
-> iex='docker compose exec app iex -S mix'
-> mix='docker compose exec app mix'
->
-
-
-#### Breakdown of the aliases
-
-
-* docker compose exec is the docker syntax for executing a command in a container.
-* app is the container to execute the command in.
-* mix/iex is the command to execute.
-
-
-[git-from-template]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template
-
-
-## Application Testing
-
-The Avium Labs Phoenix docker image includes the MIX\_ENV environment variable 
-in the Dockerfile.   
-
-`MIX_ENV=test`  
-
-Run docker compose down/docker compose up to load the updated configuration and 
-then run `mix test`.   
-
-Change the MIX\_ENV setting back to `dev`, run docker compose down/up to go back 
-to development mode. 
+[git-from-template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)

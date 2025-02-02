@@ -5,9 +5,10 @@ services:
         required: true
     image: "aviumlabs/phoenix:latest-alpine" 
     volumes:
-      - ./src:${APP_CONTAINER_ROOT}/$APP_NAME
+      - ./src:${WORKINGDIR}/$APP_NAME
     ports:
       - "4000:4000"
+    working_dir: ${WORKINGDIR}/$APP_NAME
     depends_on:
       db:
         condition: service_healthy
