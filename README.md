@@ -24,14 +24,13 @@ After creating a new project based on this repository, the directory layout is
 as follows:
 
 
->  
-> parent_directory  
->   LICENSE  
->   README.md  
->   compose.yaml  
->   src/  
->   .env  
->   .appdev  
+myapp/  
+> LICENSE  
+> README.md  
+> compose.yaml  
+> src/  
+> .env  
+> .appdev  
 >  
 
 
