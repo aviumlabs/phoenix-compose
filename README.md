@@ -17,22 +17,22 @@ The stack is as follows:
 * Erlang 27.x
 * Elixir 1.x
 * Phoenix Framework 1.x
-* PostgreSQL 17.x
+* PostgreSQL 16.x
 
 
 After creating a new project based on this repository, the directory layout is 
 as follows:
 
 
-> 
-> parent_directory
->   LICENSE
->   README.md
->   compose.yaml
->   src/
->   .env
->   .appdev
-> 
+>  
+> parent_directory  
+>   LICENSE  
+>   README.md  
+>   compose.yaml  
+>   src/  
+>   .env  
+>   .appdev  
+>  
 
 
 parent\_directory is the name of the project/repository used in the 
@@ -61,7 +61,9 @@ Here are a couple of shell commands that can be used to generate this file.
 ```shell
 # macOS
 date +%s | shasum -a 256 | base64 | head -c14 > .secret_db
+```
 
+```shell
 # linux-gnu
 date +%s | sha256sum | base64 | head -c14 > .secret_db
 ```
@@ -119,17 +121,19 @@ main
 # general command syntax
 gh repo create <application_name> -c -d "Application description" \
 --public|private -p aviumlabs/phoenix-compose 
+```
 
+```shell
 # specific example
 gh repo create myapp -c -d "MyApp Test Application" --private -p aviumlabs/phoenix-compose
 ```
 
 
-> 
-> Created repository \<github\_userid\>/myapp  on GitHub
-> https://github.com/\<github\_userid\>
+>  
+> Created repository \<github\_userid\>/myapp  on GitHub  
+> https://github.com/\<github\_userid\>  
 > Cloning into 'myapp'...  
-> 
+>  
 
 
 ## Initializing Your Phoenix Framework Application
@@ -144,23 +148,23 @@ phoenix container and the password of the database.
 
 
 ```shell
-docker compose up
-
-> 
-> app-1  | Updating dev.exs...
-> app-1  | Compiling 15 files (.ex)
-> app-1  | Generated app app
-> app-1  | The database for App.Repo has been created
-> app-1  | Updating test.exs...
-> app-1  | [info] Running AppWeb.Endpoint with Bandit 1.6.7 at 0.0.0.0:4000 (http)
-> app-1  | [info] Access AppWeb.Endpoint at http://localhost:4000
-> app-1  | [watch] build finished, watching for changes...
-> app-1  | 
-> app-1  | Rebuilding...
-> app-1  | 
-> app-1  | Done in 1038ms.
-> 
+docker compose up  
 ```
+
+>  
+> app-1  | Updating dev.exs...  
+> app-1  | Compiling 15 files (.ex)  
+> app-1  | Generated app app  
+> app-1  | The database for App.Repo has been created  
+> app-1  | Updating test.exs...  
+> app-1  | [info] Running AppWeb.Endpoint with Bandit 1.6.7 at 0.0.0.0:4000 (http)  
+> app-1  | [info] Access AppWeb.Endpoint at http://localhost:4000  
+> app-1  | [watch] build finished, watching for changes...  
+> app-1  |  
+> app-1  | Rebuilding...  
+> app-1  |  
+> app-1  | Done in 1038ms.  
+>  
 
 
 Open http://localhost:4000 to the default landing page of a 
@@ -209,7 +213,7 @@ end
 
 
 ```shell
-# Set an alias for run mix in the container
+# Source mix alias for run mix in the container
 . ./.appdev
 
 # Run mix to get the dependency
@@ -274,7 +278,7 @@ docker container ls
 | CONTAINER ID   | IMAGE                           | ... | NAMES              |
 |----------------|---------------------------------|-----|--------------------|
 | nnn            | aviumlabs/phoenix:latest-alpine | ... | myapp-app-1        |
-| nnn            | postgres:17-alpine3.21          | ... | myapp-db-1         |
+| nnn            | postgres:16-alpine3.21          | ... | myapp-db-1         |
 
 
 ## Resetting the Database
