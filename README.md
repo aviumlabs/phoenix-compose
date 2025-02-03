@@ -40,8 +40,8 @@ as follows:
  See Creating a Repository From this Template below.
 
 
-The src directory is empty until docker compose up is run. On the first run 
-of docker compose up, the src directory is bind mounted into the phoenix 
+The src directory is empty until `docker compose up` is run. On the first run 
+of `docker compose up`, the src directory is bind mounted into the phoenix 
 framework application (app) container. 
 
 
