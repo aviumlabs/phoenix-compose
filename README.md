@@ -35,8 +35,9 @@ as follows:
 >  
 
 
-parent\_directory is the name of the project/repository used in the 
-`gh repo create` command. See Creating a Repository From this Template below.
+ The name of the parent directory is the same as the name of repository 
+ created after running `gh repo create` command. 
+ See Creating a Repository From this Template below.
 
 
 The src directory is empty until docker compose up is run. On the first run 
@@ -45,10 +46,10 @@ framework application (app) container.
 
 
 The Phoenix Framework phx.new command is automatically run and the src 
-directory is populated with the Phoenix Framework application. The  
+directory is populated with the Phoenix Framework application. The 
 configuration files dev.exs and test.exs are automatically updated to support 
 the docker runtime. These files are also automatically updated to support 
-connecting to the included PostgreSQL database (db) container.
+connecting to the included PostgreSQL database (db) container. 
 
 
 Prior to running `docker compose up` the first time, one file must be 
@@ -56,7 +57,7 @@ generated - the .secret_db file containing the database connection
 credential.
 
 
-Here are a couple of shell commands that can be used to generate this file. 
+Various shell scripts that can be used to generate the database secrets file. 
 
 ```shell
 # macOS
@@ -69,7 +70,7 @@ date +%s | sha256sum | base64 | head -c14 > .secret_db
 ```
 
 
-Save the following as a PowerShell script and run the script to generate 
+Save the following PowerShell script and run the script to generate 
 the database credential file. 
 
 ```PowerShell
@@ -176,15 +177,15 @@ edited with your favorite editor.
 
 
 * README.md
-* assets
-* deps
-* _build
-* config 
-* lib
+* assets/
+* deps/
+* _build/
+* config/
+* lib/
 * mix.exs
 * mix.lock
-* priv
-* test
+* priv/
+* test/
 
 
 Edit src/lib/my_webapp/controllers/page_html/home.html.eex
