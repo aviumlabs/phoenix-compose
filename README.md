@@ -24,13 +24,14 @@ After creating a new project based on this repository, the directory layout is
 as follows:
 
 
-myapp/  
-> LICENSE  
-> README.md  
-> compose.yaml  
-> src/  
-> .env  
-> .appdev  
+>
+> myapp/  
+>> LICENSE  
+>> README.md  
+>> compose.yaml  
+>> src/  
+>> .env  
+>> .appdev  
 >  
 
 
@@ -212,9 +213,11 @@ end
 
 
 ```shell
-# Source mix alias for run mix in the container
+# Source mix alias to run mix in the container
 . ./.appdev
+```
 
+```shell
 # Run mix to get the dependency
 mix deps.get
 ``` 
@@ -291,11 +294,21 @@ services `ctrl-c` and then run the following:
 
 ```shell
 docker compose up db
+```
 
+```shell
 mix ecto.reset
+```
 
+>  
+> ...  
+>  
+
+```shell
 ctrl-c
+```
 
+```shell
 docker compose up
 ```
 
@@ -307,11 +320,15 @@ Then run the above steps as follows:
 
 ```shell
 docker compose stop app
+```
 
+```shell
 mix ecto.reset
+```
 
+```shell
 docker compose start app
 ```
 
 
-[git-from-template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
+[GitHub Template Reference](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
