@@ -17,7 +17,7 @@ The stack is as follows as of 2025-03-02:
 * Alpine Linux 3.21.x  
 * Erlang 27.2.x  
 * Elixir 1.17.x or 1.18.x  
-* Phoenix Framework 1.17.x  
+* Phoenix Framework 1.7.x  
 * PostgreSQL 17.x  
 
 
