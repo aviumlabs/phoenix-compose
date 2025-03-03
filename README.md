@@ -12,12 +12,13 @@ The repository is setup as a GitHub template repository, designed to be cloned
 into a new project to begin immediate development. 
 
 
-The stack is as follows:
-* Alpine Linux 3.x
-* Erlang 27.x
-* Elixir 1.x
-* Phoenix Framework 1.x
-* PostgreSQL 16.x
+The stack is as follows as of 2025-03-02:
+
+* Alpine Linux 3.21.x  
+* Erlang 27.2.x  
+* Elixir 1.17.x or 1.18.x  
+* Phoenix Framework 1.17.x  
+* PostgreSQL 17.x  
 
 
 After creating a new project based on this repository, the directory layout is 
@@ -35,9 +36,10 @@ as follows:
 >  
 
 
- The name of the parent directory is the same as the name of repository 
+ The name of the parent directory is the same as the name of the repository 
  created after running `gh repo create` command. 
- See Creating a Repository From this Template below.
+
+ See Creating a Repository From this Template below.  
 
 
 The src directory is empty until `docker compose up` is run. On the first run 
@@ -74,6 +76,7 @@ Save the following PowerShell script and run the script to generate
 the database credential file. 
 
 ```PowerShell
+# Windows
 $DB_SECRET_FILE = "$pwd\.secret_db"
 
 # Generate a random password of length PasswordLength, no special characters 
@@ -145,7 +148,10 @@ database secret file, run `docker compose up`.
 
 
 The included .env file sets the values required for initializing the 
-phoenix container and the password of the database.
+phoenix container and the password of the database.  
+
+The default APP_NAME variable in the .env file is set to `app` and can be 
+changed as needed.  
 
 
 ```shell
