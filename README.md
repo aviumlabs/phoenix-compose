@@ -1,29 +1,26 @@
 # A Phoenix Framework Rapid Development Environment
 
 This project is designed to be a rapid development environment based on 
-the amazing work of the [Phoenix Framework](https://www.phoenixframework.org) 
-project.
-
+the amazing work of [Phoenix Framework](https://www.phoenixframework.org), 
+[Elixir](https://elixir-lang.org/), [Erlang](https://www.erlang.org/), 
+[Alpine Linux](https://www.alpinelinux.org/), and 
+[PostgreSQL](https://www.postgresql.org/).
 
 ---
-
 
 The repository is setup as a GitHub template repository, designed to be cloned 
 into a new project to begin immediate development. 
 
-
-The stack is as follows as of 2025-03-02:
+The stack is as follows as of 2025-05-03:
 
 * Alpine Linux 3.21.x  
-* Erlang 27.2.x  
-* Elixir 1.17.x or 1.18.x  
+* Erlang 27.3.x  
+* Elixir 1.18.x  
 * Phoenix Framework 1.7.x  
 * PostgreSQL 17.x  
 
-
 After creating a new project based on this repository, the directory layout is 
 as follows:
-
 
 >
 > myapp/  
@@ -43,8 +40,8 @@ as follows:
 
 
 The src directory is empty until `docker compose up` is run. On the first run 
-of `docker compose up`, the src directory is bind mounted into the phoenix 
-framework application (app) container. 
+of `docker compose up`, the src directory is bind mounted into the Phoenix 
+Framework application (app) container. 
 
 
 The Phoenix Framework phx.new command is automatically run and the src 
@@ -79,25 +76,21 @@ the database credential file.
 # Windows
 $DB_SECRET_FILE = "$pwd\.secret_db"
 
-# Generate a random password of length PasswordLength, no special characters 
-# included 
-# lowercase alphabet characters [char]97..[char]122
-# uppercase alphabet characters [char]65..[char]90
-# numbers [char]48..[char]57
-# based on "The Random Password Generator for PowerShell Core 6 and 7" by
-# mtsimmons
-function Get-RandomPassword {
+# Generate a random password of length PwLength, defaults to 14 characters
+function New-RandomPassword {
     param (
-        [int]$PasswordLength = 14
+        [int]$PwLength = 14
     )
-    $charList = [char]97..[char]122 + [char]65..[char]90 + [char]48..[char]57
+    # Char 97 - 122 'a-z'
+    # Char 65 - 90 'A-Z'
+    # Char 48 - 57 '0-9'
+    # Char 45 '-'
+    # Char 43 '+'
+    $char_list = [char]97..[char]122 + [char]65..[char]90 + [char]48..[char]57 `
+    + [char]43 + [char]45
 
-    $tmp = @()
-    For ($i = 0; $i -lt $PasswordLength + 1; $i++) {
-        $tmp += $charList | Get-Random
-    }
-
-    $pass = -join $tmp
+    # Select a random character from the list and convert back to character
+    $pass = -Join ((Get-Random -InputObject $char_list -Count $PwLength) | ForEach-Object {[char]$_})
     
     return $pass
 }
@@ -120,32 +113,29 @@ main
 
 ## Creating a Repository From this Template
 
-
+General command syntax:  
 ```shell
-# general command syntax
 gh repo create <application_name> -c -d "Application description" \
 --public|private -p aviumlabs/phoenix-compose 
 ```
 
+Specific example:  
 ```shell
-# specific example
 gh repo create myapp -c -d "MyApp Test Application" --private -p aviumlabs/phoenix-compose
 ```
 
 
 >  
-> Created repository \<github\_userid\>/myapp  on GitHub  
-> https://github.com/\<github\_userid\>  
+> Created repository <github_userid>/myapp  on GitHub  
+> https://github.com/<github_userid>  
 > Cloning into 'myapp'...  
 >  
 
 
 ## Initializing Your Phoenix Framework Application
 
-
 After creating a new project through `gh repo create` and creating the 
 database secret file, run `docker compose up`. 
-
 
 The included .env file sets the values required for initializing the 
 phoenix container and the password of the database.  
@@ -173,40 +163,32 @@ docker compose up
 > app-1  | Done in 1038ms.  
 >  
 
-
 Open http://localhost:4000 to the default landing page of a 
 Phoenix Framework application.
 
-
 The src directory is now populated with the application files and can be 
-edited with your favorite editor.
+edited with your favorite editor.  
 
-
-* README.md
-* assets/
-* deps/
-* _build/
-* config/
-* lib/
-* mix.exs
-* mix.lock
-* priv/
-* test/
-
+* README.md  
+* assets/  
+* deps/  
+* _build/  
+* config/  
+* lib/  
+* mix.exs  
+* mix.lock  
+* priv/  
+* test/  
 
 Edit src/lib/my_webapp/controllers/page_html/home.html.eex
-
 
 Search for Phoenix Framework and insert some text like 
 MyApp powered by Phoenix Framework.
 
-
 Save the file and go back to your browser and you will automatically see 
-the change.
-
+the change. 
 
 ### Add a Project Dependency
-
 
 Edit src/mix.exs and add the dependency to the dependency section:
 
@@ -218,37 +200,30 @@ defp deps do
 end
 ```
 
-
+Source mix alias to run mix in the container:  
 ```shell
-# Source mix alias to run mix in the container
 . ./.appdev
 ```
 
+Run mix to get the dependency:  
 ```shell
-# Run mix to get the dependency
 mix deps.get
 ``` 
 
-
 ## Application Testing
-
 
 Edit the `.env` file and change the MIX\_ENV variable.
 
-
 `MIX_ENV=test`  
-
 
 Run docker compose down/docker compose up to load the updated configuration 
 and then run `mix test`.  
-
 
 Change the MIX\_ENV setting back to `dev`, run docker compose down/up to go 
 back to development mode.
 
 
 ## Additional Docker Commands
-
 
 Running the docker containers in the background:
 
@@ -294,10 +269,8 @@ docker container ls
 
 ### Run ecto.reset
 
-
 If the services are running in the foreground; you need to stop the running 
 services `ctrl-c` and then run the following:
-
 
 ```shell
 docker compose up db
@@ -319,9 +292,7 @@ ctrl-c
 docker compose up
 ```
 
-
 Alternatively, if the docker services are running in the background;
-
 
 Then run the above steps as follows:
 
@@ -336,6 +307,5 @@ mix ecto.reset
 ```shell
 docker compose start app
 ```
-
 
 [GitHub Template Reference](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)
