@@ -11,12 +11,12 @@ the amazing work of [Phoenix Framework](https://www.phoenixframework.org),
 The repository is setup as a GitHub template repository, designed to be cloned 
 into a new project to begin immediate development. 
 
-The stack is as follows as of 2025-05-03:
+The stack is as follows as of 2025-11-26:
 
-* Alpine Linux 3.21.x  
-* Erlang 27.3.x  
-* Elixir 1.18.x  
-* Phoenix Framework 1.7.x  
+* Alpine Linux 3.22.x  
+* Erlang 28.1.x  
+* Elixir 1.19.x  
+* Phoenix Framework 1.8.x   
 * PostgreSQL 17.x  
 
 After creating a new project based on this repository, the directory layout is 
@@ -154,13 +154,15 @@ docker compose up
 > app-1  | Generated app app  
 > app-1  | The database for App.Repo has been created  
 > app-1  | Updating test.exs...  
-> app-1  | [info] Running AppWeb.Endpoint with Bandit 1.6.7 at 0.0.0.0:4000 (http)  
+> ...
+> app-1  | [info] Running AppWeb.Endpoint with Bandit 1.8.0 at 0.0.0.0:4000 (http)  
 > app-1  | [info] Access AppWeb.Endpoint at http://localhost:4000  
 > app-1  | [watch] build finished, watching for changes...  
+> app-1  | = tailwindcss v4.1.12
 > app-1  |  
-> app-1  | Rebuilding...  
-> app-1  |  
-> app-1  | Done in 1038ms.  
+> app-1  | /*! daisyUI 5.0.35 */ 
+> app-1  | ...  
+> app-1  | Done in 331ms.  
 >  
 
 Open http://localhost:4000 to the default landing page of a 
@@ -262,7 +264,7 @@ docker container ls
 | CONTAINER ID   | IMAGE                           | ... | NAMES              |
 |----------------|---------------------------------|-----|--------------------|
 | nnn            | aviumlabs/phoenix:latest-alpine | ... | myapp-app-1        |
-| nnn            | postgres:16-alpine3.21          | ... | myapp-db-1         |
+| nnn            | postgres:17-alpine3.22          | ... | myapp-db-1         |
 
 
 ## Resetting the Database
