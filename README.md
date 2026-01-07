@@ -11,19 +11,19 @@ the amazing work of [Phoenix Framework](https://www.phoenixframework.org),
 The repository is setup as a GitHub template repository, designed to be cloned 
 into a new project to begin immediate development. 
 
-The stack is as follows as of 2025-11-26:
+The stack is as follows as of 2026-01-06:
 
-* Alpine Linux 3.22.x  
+* Alpine Linux 3.23.x  
 * Erlang 28.1.x  
 * Elixir 1.19.x  
 * Phoenix Framework 1.8.x   
-* PostgreSQL 17.x  
+* PostgreSQL 18.x  
 
 After creating a new project based on this repository, the directory layout is 
 as follows:
 
 >
-> myapp/  
+> `project_name`/  
 >> LICENSE  
 >> README.md  
 >> compose.yaml  
@@ -33,10 +33,11 @@ as follows:
 >  
 
 
- The name of the parent directory is the same as the name of the repository 
- created after running `gh repo create` command. 
 
- See Creating a Repository From this Template below.  
+The name of the parent directory is the same as the name of the repository 
+created when running `gh repo create` command. 
+
+See Creating a Repository From this Template below.  
 
 
 The src directory is empty until `docker compose up` is run. On the first run 
@@ -58,22 +59,18 @@ credential.
 
 Various shell scripts that can be used to generate the database secrets file. 
 
+**macOS**
 ```shell
-# macOS
 date +%s | shasum -a 256 | base64 | head -c14 > .secret_db
 ```
 
+**linux-gnu**
 ```shell
-# linux-gnu
 date +%s | sha256sum | base64 | head -c14 > .secret_db
 ```
 
-
-Save the following PowerShell script and run the script to generate 
-the database credential file. 
-
+**Windows**
 ```PowerShell
-# Windows
 $DB_SECRET_FILE = "$pwd\.secret_db"
 
 # Generate a random password of length PwLength, defaults to 14 characters
@@ -155,7 +152,7 @@ docker compose up
 > app-1  | The database for App.Repo has been created  
 > app-1  | Updating test.exs...  
 > ...
-> app-1  | [info] Running AppWeb.Endpoint with Bandit 1.8.0 at 0.0.0.0:4000 (http)  
+> app-1  | [info] Running AppWeb.Endpoint with Bandit 1.10.1 at 0.0.0.0:4000 (http)  
 > app-1  | [info] Access AppWeb.Endpoint at http://localhost:4000  
 > app-1  | [watch] build finished, watching for changes...  
 > app-1  | = tailwindcss v4.1.12
@@ -202,7 +199,11 @@ defp deps do
 end
 ```
 
-Source mix alias to run mix in the container:  
+## .appdev
+
+The `.appdev` file has two aliases for running mix and iex in the app container.
+
+Source the .appdev file:  
 ```shell
 . ./.appdev
 ```
