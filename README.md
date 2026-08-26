@@ -11,13 +11,13 @@ the amazing work of [Phoenix Framework](https://www.phoenixframework.org),
 The repository is setup as a GitHub template repository, designed to be cloned 
 into a new project to begin immediate development. 
 
-The stack is as follows as of 2026-01-06:
-
+The stack is as follows as of 2026-08-26:
 * Alpine Linux 3.23.x  
-* Erlang 28.1.x  
-* Elixir 1.19.x  
+* Erlang 29.0.x  
+* Elixir 1.20.x  
 * Phoenix Framework 1.8.x   
-* PostgreSQL 18.x  
+* PostgreSQL 18.x 
+
 
 After creating a new project based on this repository, the directory layout is 
 as follows:
